@@ -96,3 +96,10 @@ Visit the [Nx Documentation](https://nx.dev/angular) to learn more.
 ## Remove unused Imports
 
 `yarn remove-unused-imports`
+
+# Known Issues
+
+- Chrome does not prompt to save credentials
+- If a login fails, the dialog should stay up
+  - MatDialog only allows to return it's form content data, when it is closed
+- When clicking on 'Login' in the MenuBar the click-animation does not finish

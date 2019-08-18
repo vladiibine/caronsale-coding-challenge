@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthenticationFacade, LoginData } from '@caronsale/authentication';
+import { filter } from 'rxjs/operators';
 import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
 
 @Component({
@@ -8,18 +11,23 @@ import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
   styleUrls: ['./menu-bar.component.styl']
 })
 export class MenuBarComponent implements OnInit {
-  constructor(private dialog: MatDialog) {}
+  constructor(
+    private dialog: MatDialog,
+    private authenticationFacade: AuthenticationFacade
+  ) {}
 
   ngOnInit() {}
 
   openLoginDialog() {
-    // open login dialog
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = false;
+    dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     const dialogRef = this.dialog.open(LoginDialogComponent, dialogConfig);
     dialogRef
       .afterClosed()
-      .subscribe(val => console.log('Dialog output:', val));
+      .pipe(filter((e: LoginData) => !!e && !!e.email && !!e.password))
+      .subscribe(val => {
+        this.authenticationFacade.sendAuthentication(val);
+      });
   }
 }
