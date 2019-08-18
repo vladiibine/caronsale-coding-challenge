@@ -15,7 +15,11 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@caronsale/data": ["libs/data/src/index.ts"],
+      "@caronsale/authentication": ["libs/authentication/src/index.ts"],
+      "@caronsale/ui": ["libs/ui/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
