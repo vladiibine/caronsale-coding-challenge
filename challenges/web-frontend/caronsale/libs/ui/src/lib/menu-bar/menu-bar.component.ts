@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
 
 @Component({
   selector: 'caronsale-menu-bar',
@@ -6,10 +8,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./menu-bar.component.styl']
 })
 export class MenuBarComponent implements OnInit {
+  constructor(private dialog: MatDialog) {}
 
-  constructor() { }
+  ngOnInit() {}
 
-  ngOnInit() {
+  openLoginDialog() {
+    // open login dialog
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = false;
+    dialogConfig.autoFocus = true;
+    const dialogRef = this.dialog.open(LoginDialogComponent, dialogConfig);
+    dialogRef
+      .afterClosed()
+      .subscribe(val => console.log('Dialog output:', val));
   }
-
 }

@@ -1,1 +1,25 @@
-<p>login-dialog works!</p>
+<mat-dialog-content [formGroup]="form">
+  <mat-form-field>
+    <input formControlName="email" matInput placeholder="E-Mail" type="email" />
+  </mat-form-field>
+
+  <mat-form-field>
+    <input
+      formControlName="password"
+      matInput
+      placeholder="Password"
+      type="password"
+    />
+    <mat-icon matSuffix>lock</mat-icon>
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button (click)="close()" class="mat-raised-button">
+    Abbrechen
+  </button>
+
+  <button (click)="login()" class="mat-raised-button mat-primary">
+    Einloggen
+  </button>
+</mat-dialog-actions>

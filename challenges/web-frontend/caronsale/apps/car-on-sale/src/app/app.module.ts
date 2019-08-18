@@ -1,17 +1,18 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthenticationModule } from '@caronsale/authentication';
 import { UiModule } from '@caronsale/ui';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { from } from 'rxjs';
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, HomeComponent],
   imports: [
     UiModule,
     BrowserModule,
@@ -29,6 +30,7 @@ import { AppComponent } from './app.component';
     !environment.production ? StoreDevtoolsModule.instrument() : []
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [HomeComponent]
 })
 export class AppModule {}
