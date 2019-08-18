@@ -1,0 +1,7 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/out-tsc"
+  },
+  "exclude": ["./apps/car-on-sale-e2e"],
+  "extends": "./tsconfig.json"
+}
