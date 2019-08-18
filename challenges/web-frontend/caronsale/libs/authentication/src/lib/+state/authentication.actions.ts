@@ -1,33 +1,21 @@
-import { Action } from '@ngrx/store';
-import { Entity } from './authentication.reducer';
+import { MatDialogRef } from '@angular/material/dialog';
+import { createAction, props } from '@ngrx/store';
+import { AuthenticationResult, LoginData } from './authentication.models';
 
-export enum AuthenticationActionTypes {
-  LoadAuthentication = '[Authentication] Load Authentication',
-  AuthenticationLoaded = '[Authentication] Authentication Loaded',
-  AuthenticationLoadError = '[Authentication] Authentication Load Error'
-}
+export const sendAuthentication = createAction(
+  '[Authentication] Send Authentication',
+  props<{ loginData: LoginData }>()
+);
 
-export class LoadAuthentication implements Action {
-  readonly type = AuthenticationActionTypes.LoadAuthentication;
-}
-
-export class AuthenticationLoadError implements Action {
-  readonly type = AuthenticationActionTypes.AuthenticationLoadError;
-  constructor(public payload: any) {}
-}
-
-export class AuthenticationLoaded implements Action {
-  readonly type = AuthenticationActionTypes.AuthenticationLoaded;
-  constructor(public payload: Entity[]) {}
-}
-
-export type AuthenticationAction =
-  | LoadAuthentication
-  | AuthenticationLoaded
-  | AuthenticationLoadError;
-
-export const fromAuthenticationActions = {
-  LoadAuthentication,
-  AuthenticationLoaded,
-  AuthenticationLoadError
-};
+export const sendAuthenticationSuccess = createAction(
+  '[Authentication] Send Authentication Success',
+  props<{ authentication: AuthenticationResult }>()
+);
+export const sendAuthenticationSuccessTest = createAction(
+  '[Authentication] Send Authentication Success Test',
+  props<{ authentication: AuthenticationResult }>()
+);
+export const sendAuthenticationFailure = createAction(
+  '[Authentication] Send Authentication Failure',
+  props<{ error: any }>()
+);

@@ -1,34 +1,53 @@
 import { Injectable } from '@angular/core';
-import { Effect, Actions } from '@ngrx/effects';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Actions, createEffect } from '@ngrx/effects';
 import { DataPersistence } from '@nrwl/angular';
-
+import { switchMap, take, tap } from 'rxjs/operators';
+import { AuthenticationService } from '../authentication.service';
+import * as AuthenticationActions from './authentication.actions';
 import { AuthenticationPartialState } from './authentication.reducer';
-import {
-  LoadAuthentication,
-  AuthenticationLoaded,
-  AuthenticationLoadError,
-  AuthenticationActionTypes
-} from './authentication.actions';
 
 @Injectable()
 export class AuthenticationEffects {
-  @Effect() loadAuthentication$ = this.dataPersistence.fetch(
-    AuthenticationActionTypes.LoadAuthentication,
-    {
-      run: (action: LoadAuthentication, state: AuthenticationPartialState) => {
-        // Your custom REST 'load' logic goes here. For now just return an empty list...
-        return new AuthenticationLoaded([]);
-      },
-
-      onError: (action: LoadAuthentication, error) => {
+  sendAuthentication$ = createEffect(() =>
+    this.dataPersistence.fetch(AuthenticationActions.sendAuthentication, {
+      onError: (
+        action: ReturnType<typeof AuthenticationActions.sendAuthentication>,
+        error
+      ) => {
         console.error('Error', error);
-        return new AuthenticationLoadError(error);
+        this._snackBar.open('Login failed', 'Ok', {
+          duration: 3000
+        });
+        return AuthenticationActions.sendAuthenticationFailure({ error });
+      },
+      run: (
+        action: ReturnType<typeof AuthenticationActions.sendAuthentication>,
+        state: AuthenticationPartialState
+      ) => {
+        return this.authenticationService.login(action.loginData).pipe(
+          take(1),
+          // tap(e => console.log('Result sendAuthentication', e)),
+          tap(e =>
+            this._snackBar.open('Welcome back ' + e.userId, 'Ok', {
+              duration: 3000
+            })
+          ),
+          switchMap(authentication => {
+            return [
+              AuthenticationActions.sendAuthenticationSuccess({
+                authentication
+              })
+            ];
+          })
+        );
       }
-    }
+    })
   );
-
   constructor(
     private actions$: Actions,
-    private dataPersistence: DataPersistence<AuthenticationPartialState>
+    private dataPersistence: DataPersistence<AuthenticationPartialState>,
+    private authenticationService: AuthenticationService,
+    private _snackBar: MatSnackBar
   ) {}
 }
