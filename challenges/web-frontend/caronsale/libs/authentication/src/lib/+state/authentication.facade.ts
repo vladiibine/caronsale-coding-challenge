@@ -1,37 +1,27 @@
 import { Injectable } from '@angular/core';
-
-import { Store } from '@ngrx/store';
-
-import { MatDialogRef } from '@angular/material/dialog';
+import { Store, select } from '@ngrx/store';
 import * as AuthenticationActions from './authentication.actions';
 import { LoginData } from './authentication.models';
 import * as fromAuthentication from './authentication.reducer';
-// import * as AuthenticationSelectors from './authentication.selectors';
+import * as AuthenticationSelectors from './authentication.selectors';
 
 @Injectable()
 export class AuthenticationFacade {
-  // loaded$ = this.store.pipe(
-  //   select(AuthenticationSelectors.getAuthenticationLoaded)
-  // );
-  // allAuthentication$ = this.store.pipe(
-  //   select(AuthenticationSelectors.getAllAuthentication)
-  // );
-  // selectedAuthentication$ = this.store.pipe(
-  //   select(AuthenticationSelectors.getSelected)
-  // );
-
+  authenticated$ = this.store.pipe(
+    select(AuthenticationSelectors.getAuthenticated)
+  );
+  getAuthenticationState$ = this.store.pipe(
+    select(AuthenticationSelectors.getAuthenticationState)
+  );
   constructor(
     private store: Store<fromAuthentication.AuthenticationPartialState>
   ) {}
 
-  // loadAll() {
-  //   this.store.dispatch(AuthenticationActions.loadAuthentication());
-  // }
-
-  sendAuthentication({ email, password }: LoginData): void {
+  sendAuthentication({ email, password }: LoginData, navTarget: string): void {
     this.store.dispatch(
       AuthenticationActions.sendAuthentication({
-        loginData: { email, password }
+        loginData: { email, password },
+        navTarget
       })
     );
   }

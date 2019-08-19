@@ -1,4 +1,5 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
+import * as fromConsts from '../authentication.consts';
 import {
   AUTHENTICATION_FEATURE_KEY,
   AuthenticationPartialState,
@@ -11,35 +12,7 @@ export const getAuthenticationState = createFeatureSelector<
   AuthenticationState
 >(AUTHENTICATION_FEATURE_KEY);
 
-// const { selectAll, selectEntities } = authenticationAdapter.getSelectors();
-
-// export const getAuthenticationLoaded = createSelector(
-//   getAuthenticationState,
-//   (state: AuthenticationState) => state.loaded
-// );
-
-// export const getAuthenticationError = createSelector(
-//   getAuthenticationState,
-//   (state: AuthenticationState) => state.error
-// );
-
-// export const getAllAuthentication = createSelector(
-//   getAuthenticationState,
-//   (state: AuthenticationState) => selectAll(state)
-// );
-
-// export const getAuthenticationEntities = createSelector(
-//   getAuthenticationState,
-//   (state: AuthenticationState) => selectEntities(state)
-// );
-
-// export const getSelectedId = createSelector(
-//   getAuthenticationState,
-//   (state: AuthenticationState) => state.selectedId
-// );
-
-// export const getSelected = createSelector(
-//   getAuthenticationEntities,
-//   getSelectedId,
-//   (entities, selectedId) => selectedId && entities[selectedId]
-// );
+export const getAuthenticated = createSelector(
+  getAuthenticationState,
+  (state: AuthenticationState) => state
+);

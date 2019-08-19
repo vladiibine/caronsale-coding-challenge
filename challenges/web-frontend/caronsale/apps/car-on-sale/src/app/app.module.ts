@@ -6,18 +6,22 @@ import {
   AuthenticationFacade,
   AuthenticationModule
 } from '@caronsale/authentication';
+import { BuyerModule } from '@caronsale/buyer';
 import { UiModule } from '@caronsale/ui';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { DataPersistence } from '@nrwl/angular';
 import { environment } from '../environments/environment';
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
+import { MainComponent } from './main/main.component';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent],
+  declarations: [AppComponent, HomeComponent, MainComponent],
   imports: [
+    AppRoutingModule,
+    BuyerModule,
     AuthenticationModule,
     UiModule,
     BrowserModule,
@@ -36,6 +40,6 @@ import { HomeComponent } from './home/home.component';
   ],
   providers: [AuthenticationFacade],
   bootstrap: [AppComponent],
-  entryComponents: [HomeComponent]
+  entryComponents: [MainComponent]
 })
 export class AppModule {}

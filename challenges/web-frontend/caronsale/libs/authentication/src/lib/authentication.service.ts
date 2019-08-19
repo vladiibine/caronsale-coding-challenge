@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { sha512 } from 'js-sha512';
 import { Observable, of } from 'rxjs';
@@ -8,21 +8,7 @@ import {
   LoginData
 } from './+state/authentication.models';
 
-export const ANONYMOUS_USER: AuthenticationResult = {
-  authenticated: false,
-  privileges: 'string',
-  token: 'string',
-  type: '0', // TODO: is '0' correct?
-  userId: 'string'
-};
-const httpOptions = {
-  headers: new HttpHeaders({
-    'Content-Type': 'application/json'
-  })
-};
-const baseURL = 'https://caronsale-backend-service-dev.herokuapp.com/api/v1';
-const authenticationUrl = baseURL + '/authentication/';
-// const baseURL = 'https://caronsale-backend-service-dev.example.com/api/v1';
+import * as fromConsts from './authentication.consts';
 
 @Injectable({
   providedIn: 'root'
@@ -47,11 +33,11 @@ export class AuthenticationService {
     const passwordHash = this.hashPasswordWithCycles(password, 5);
     return this.http
       .put<AuthenticationResult>(
-        authenticationUrl + email,
+        fromConsts.authenticationUrl + email,
         {
           password: passwordHash
         },
-        httpOptions
+        fromConsts.httpOptions
       )
       .pipe(
         shareReplay()
@@ -60,6 +46,6 @@ export class AuthenticationService {
   }
 
   logout(): Observable<AuthenticationResult> {
-    return of(ANONYMOUS_USER);
+    return of(fromConsts.ANONYMOUS_USER);
   }
 }

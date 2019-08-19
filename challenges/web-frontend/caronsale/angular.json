@@ -202,6 +202,33 @@
       "root": "libs/ui",
       "schematics": {},
       "sourceRoot": "libs/ui/src"
+    },
+    "buyer": {
+      "projectType": "library",
+      "root": "libs/buyer",
+      "sourceRoot": "libs/buyer/src",
+      "prefix": "caronsale",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/buyer/tsconfig.lib.json",
+              "libs/buyer/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/buyer/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/buyer/jest.config.js",
+            "tsConfig": "libs/buyer/tsconfig.spec.json",
+            "setupFile": "libs/buyer/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {}
     }
   },
   "schematics": {
@@ -221,6 +248,10 @@
       "spec": false,
       "style": "styl",
       "styleext": "styl"
+    },
+    "@schematics/angular:guard": {
+      "skipTests": true,
+      "spec": false
     }
   },
   "version": 1

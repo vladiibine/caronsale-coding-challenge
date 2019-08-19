@@ -12,8 +12,8 @@ export interface LoginData {
 
 export interface AuthenticationResult {
   authenticated: boolean;
-  privileges: string;
-  token: string;
-  type: '0' | '1' | '2' | '3' | '4';
-  userId: string;
+  privileges: null | string;
+  token: null | string;
+  type: null | '0' | '1' | '2' | '3' | '4';
+  userId: null | string;
 }

@@ -28,14 +28,14 @@ const getSelectedUsers = createSelector(
   getAllUsers,
   getSelectedId,
   (users, id) => {
-    const result = users.find(it => it['id'] === id);
+    const result = users.find((it: any) => it['id'] === id);
     return result ? Object.assign({}, result) : undefined;
   }
 );
 
 export const usersQuery = {
-  getLoaded,
-  getError,
   getAllUsers,
+  getError,
+  getLoaded,
   getSelectedUsers
 };

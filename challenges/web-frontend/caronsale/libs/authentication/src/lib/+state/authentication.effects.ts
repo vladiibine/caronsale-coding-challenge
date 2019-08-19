@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { Actions, createEffect } from '@ngrx/effects';
 import { DataPersistence } from '@nrwl/angular';
 import { switchMap, take, tap } from 'rxjs/operators';
@@ -39,7 +40,8 @@ export class AuthenticationEffects {
                 authentication
               })
             ];
-          })
+          }),
+          tap(() => this.router.navigate([action.navTarget]))
         );
       }
     })
@@ -48,6 +50,7 @@ export class AuthenticationEffects {
     private actions$: Actions,
     private dataPersistence: DataPersistence<AuthenticationPartialState>,
     private authenticationService: AuthenticationService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private router: Router
   ) {}
 }

@@ -4,7 +4,7 @@ import { AuthenticationResult, LoginData } from './authentication.models';
 
 export const sendAuthentication = createAction(
   '[Authentication] Send Authentication',
-  props<{ loginData: LoginData }>()
+  props<{ loginData: LoginData; navTarget: string }>()
 );
 
 export const sendAuthenticationSuccess = createAction(
