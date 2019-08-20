@@ -4,6 +4,7 @@
 - If a login fails, the dialog should stay up
   - MatDialog only allows to return it's form content data, when it is closed (??)
 - When clicking on 'Login' in the MenuBar the click animation does not finish
+- auth-error-handler is not working
 
 # ToDo
 

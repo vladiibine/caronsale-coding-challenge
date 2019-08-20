@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthenticationModule } from '@caronsale/authentication';
 import { UiModule } from '@caronsale/ui';
 import { EffectsModule } from '@ngrx/effects';
@@ -39,6 +40,7 @@ export const metaReducers: MetaReducer<any>[] = !environment.production
     AuthenticationModule,
     UiModule,
     BrowserModule,
+    BrowserAnimationsModule,
     StoreModule.forRoot(
       {},
       {

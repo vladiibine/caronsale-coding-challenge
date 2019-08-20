@@ -20,7 +20,6 @@ export class HttpConfigInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    console.log('INTERCEPT');
     return this.authenticationFacade.authenticationState$.pipe(
       take(1),
       map((e: AuthenticationState) => {
