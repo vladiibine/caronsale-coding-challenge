@@ -15,6 +15,7 @@ import {
   HttpConfigInterceptor
 } from '@caronsale/authentication';
 import * as fromConsts from '@caronsale/authentication';
+import { UiModule } from '@caronsale/ui';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { BuyerOverviewComponent } from './buyer-overview/buyer-overview.component';
@@ -40,6 +41,7 @@ export const ROUTES: Routes = [
 
 @NgModule({
   imports: [
+    UiModule,
     CommonModule,
     HttpClientModule,
     AuthenticationModule,

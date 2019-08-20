@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 
-import { select, Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 
+import { filter } from 'rxjs/operators';
+import * as SalesmanAuctionsActions from './salesman-auctions.actions';
 import * as fromSalesmanAuctions from './salesman-auctions.reducer';
 import * as SalesmanAuctionsSelectors from './salesman-auctions.selectors';
-import * as SalesmanAuctionsActions from './salesman-auctions.actions';
 
 @Injectable()
 export class SalesmanAuctionsFacade {
@@ -16,6 +17,11 @@ export class SalesmanAuctionsFacade {
   );
   selectedSalesmanAuctions$ = this.store.pipe(
     select(SalesmanAuctionsSelectors.getSelected)
+  );
+  salesmanAuctionsList$ = this.store.pipe(
+    select(SalesmanAuctionsSelectors.getSalesmanAuctionsList),
+    // tap(console.log)
+    filter((e: any[]) => !!e && e.length > 0)
   );
 
   constructor(

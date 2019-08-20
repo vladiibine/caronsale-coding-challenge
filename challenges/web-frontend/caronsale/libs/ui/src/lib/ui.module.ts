@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -21,12 +20,12 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
+import { AuctionCardComponent } from './auction-card/auction-card.component';
 import { LoginDialogComponent } from './login-dialog/login-dialog.component';
 import { MenuBarComponent } from './menu-bar/menu-bar.component';
 
 @NgModule({
   imports: [
-    BrowserAnimationsModule,
     MatSnackBarModule,
     MatInputModule,
     MatDialogModule,
@@ -51,8 +50,8 @@ import { MenuBarComponent } from './menu-bar/menu-bar.component';
     MatSelectModule,
     MatDatepickerModule
   ],
-  declarations: [MenuBarComponent, LoginDialogComponent],
-  exports: [MenuBarComponent, LoginDialogComponent],
+  declarations: [MenuBarComponent, LoginDialogComponent, AuctionCardComponent],
+  exports: [MenuBarComponent, LoginDialogComponent, AuctionCardComponent],
   entryComponents: [LoginDialogComponent]
 })
 export class UiModule {}

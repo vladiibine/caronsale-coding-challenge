@@ -1,10 +1,11 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import {
   SALESMANAUCTIONS_FEATURE_KEY,
-  SalesmanAuctionsState,
   SalesmanAuctionsPartialState,
+  SalesmanAuctionsState,
   salesmanAuctionsAdapter
 } from './salesman-auctions.reducer';
+import * as fromSalesmanAuctionsReducer from './salesman-auctions.reducer';
 
 // Lookup the 'SalesmanAuctions' feature state managed by NgRx
 export const getSalesmanAuctionsState = createFeatureSelector<
@@ -43,4 +44,9 @@ export const getSelected = createSelector(
   getSalesmanAuctionsEntities,
   getSelectedId,
   (entities, selectedId) => selectedId && entities[selectedId]
+);
+
+export const getSalesmanAuctionsList = createSelector(
+  getSalesmanAuctionsState,
+  fromSalesmanAuctionsReducer.selectAll
 );

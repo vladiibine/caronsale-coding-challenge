@@ -1,5 +1,5 @@
-import { createReducer, on, Action } from '@ngrx/store';
-import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
+import { EntityAdapter, EntityState, createEntityAdapter } from '@ngrx/entity';
+import { Action, createReducer, on } from '@ngrx/store';
 
 import * as SalesmanAuctionsActions from './salesman-auctions.actions';
 import { SalesmanAuctionsEntity } from './salesman-auctions.models';
@@ -8,9 +8,9 @@ export const SALESMANAUCTIONS_FEATURE_KEY = 'salesmanAuctions';
 
 export interface SalesmanAuctionsState
   extends EntityState<SalesmanAuctionsEntity> {
-  selectedId?: string | number; // which SalesmanAuctions record has been selected
+  error?: null | string; // last none error (if any)
   loaded: boolean; // has the SalesmanAuctions list been loaded
-  error?: string | null; // last none error (if any)
+  selectedId?: number | string; // which SalesmanAuctions record has been selected
 }
 
 export interface SalesmanAuctionsPartialState {
@@ -32,8 +32,8 @@ const salesmanAuctionsReducer = createReducer(
   initialState,
   on(SalesmanAuctionsActions.loadSalesmanAuctions, state => ({
     ...state,
-    loaded: false,
-    error: null
+    error: null,
+    loaded: false
   })),
   on(
     SalesmanAuctionsActions.loadSalesmanAuctionsSuccess,
@@ -50,8 +50,15 @@ const salesmanAuctionsReducer = createReducer(
 );
 
 export function reducer(
-  state: SalesmanAuctionsState | undefined,
+  state: undefined | SalesmanAuctionsState,
   action: Action
 ) {
   return salesmanAuctionsReducer(state, action);
 }
+
+export const {
+  selectAll,
+  selectEntities,
+  selectIds,
+  selectTotal
+} = salesmanAuctionsAdapter.getSelectors();
