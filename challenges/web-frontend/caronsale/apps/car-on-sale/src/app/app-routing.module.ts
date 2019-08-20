@@ -1,17 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { HomeComponent } from './home/home.component';
-import { MainComponent } from './main/main.component';
-
 const routes: Routes = [
   {
-    component: HomeComponent,
-    path: ''
-  },
-  {
-    component: MainComponent,
-    path: 'main'
+    path: 'buyer',
+    loadChildren: () => import('@caronsale/buyer').then(mod => mod.BuyerModule)
   },
   {
     path: '**',

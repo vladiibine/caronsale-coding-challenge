@@ -1,7 +1,12 @@
-import { Component, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { AuthenticationFacade, LoginData } from '@caronsale/authentication';
-import { filter } from 'rxjs/operators';
+import {
+  AuthenticationFacade,
+  AuthenticationState,
+  LoginData
+} from '@caronsale/authentication';
+import { Observable } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
 
 @Component({
@@ -10,16 +15,17 @@ import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
   styleUrls: ['./menu-bar.component.styl']
 })
 export class MenuBarComponent implements OnInit {
-  @Input() navTarget = '/main';
+  @Input() navTarget!: Record<string, string>;
+
+  authenticated$: Observable<boolean> = this.authenticationFacade
+    .isAuthenticated$;
 
   constructor(
     private dialog: MatDialog,
     private authenticationFacade: AuthenticationFacade
   ) {}
 
-  ngOnInit() {
-    console.log('nT', this.navTarget);
-  }
+  ngOnInit() {}
 
   openLoginDialog() {
     const dialogConfig = new MatDialogConfig();
@@ -32,5 +38,9 @@ export class MenuBarComponent implements OnInit {
       .subscribe(val => {
         this.authenticationFacade.sendAuthentication(val, this.navTarget);
       });
+  }
+
+  logOut() {
+    this.authenticationFacade.logOut();
   }
 }

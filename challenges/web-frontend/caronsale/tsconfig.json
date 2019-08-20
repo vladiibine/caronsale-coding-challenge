@@ -10,10 +10,11 @@
     "module": "esnext",
     "moduleResolution": "node",
     "paths": {
+      "*": ["types/*"],
       "@caronsale/authentication": ["libs/authentication/src/index.ts"],
+      "@caronsale/buyer": ["libs/buyer/src/index.ts"],
       "@caronsale/data": ["libs/data/src/index.ts"],
-      "@caronsale/ui": ["libs/ui/src/index.ts"],
-      "@caronsale/buyer": ["libs/buyer/src/index.ts"]
+      "@caronsale/ui": ["libs/ui/src/index.ts"]
     },
     "rootDir": ".",
     "skipDefaultLibCheck": true,

@@ -7,3 +7,5 @@ export * from './lib/+state/authentication.reducer';
 export * from './lib/+state/authentication.selectors';
 export * from './lib/authentication.module';
 export * from './lib/httpconfig.interceptor';
+export * from './lib/authorization.guard';
+export * from './lib/authentication.consts';

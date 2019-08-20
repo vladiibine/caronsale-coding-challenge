@@ -7,22 +7,32 @@ import * as AuthenticationSelectors from './authentication.selectors';
 
 @Injectable()
 export class AuthenticationFacade {
-  authenticated$ = this.store.pipe(
-    select(AuthenticationSelectors.getAuthenticated)
+  // authenticationState$ = this.store.pipe(
+  //   select(AuthenticationSelectors.getAuthenticated)
+  // );
+  isAuthenticated$ = this.store.pipe(
+    select(AuthenticationSelectors.isAuthenticated)
   );
-  getAuthenticationState$ = this.store.pipe(
+  authenticationState$ = this.store.pipe(
     select(AuthenticationSelectors.getAuthenticationState)
   );
   constructor(
     private store: Store<fromAuthentication.AuthenticationPartialState>
   ) {}
 
-  sendAuthentication({ email, password }: LoginData, navTarget: string): void {
+  sendAuthentication(
+    { email, password }: LoginData,
+    navTargets: Record<string, string>
+  ): void {
     this.store.dispatch(
       AuthenticationActions.sendAuthentication({
         loginData: { email, password },
-        navTarget
+        navTargets
       })
     );
+  }
+
+  logOut() {
+    this.store.dispatch(AuthenticationActions.resetAuthentication());
   }
 }

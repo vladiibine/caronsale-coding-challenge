@@ -1,12 +1,12 @@
 import { HttpHeaders } from '@angular/common/http';
-import { AuthenticationResult } from '..';
+import { AuthenticationResult } from './+state/authentication.models';
 
 export const ANONYMOUS_USER: AuthenticationResult = {
   authenticated: false,
-  privileges: null,
-  token: null,
+  privileges: '',
+  token: '',
   type: null,
-  userId: null
+  userId: ''
 };
 export const httpOptions = {
   headers: new HttpHeaders({
@@ -15,3 +15,9 @@ export const httpOptions = {
 };
 const baseURL = 'https://caronsale-backend-service-dev.herokuapp.com/api/v1';
 export const authenticationUrl = baseURL + '/authentication/';
+
+export enum userPrivileges {
+  salesman = '{PUBLIC_USER}~{SALESMAN_USER}',
+  buyer = '{PUBLIC_USER}~{BUYER_USER}',
+  dealership = '{PUBLIC_USER}~{DEALERSHIP_USER}'
+}

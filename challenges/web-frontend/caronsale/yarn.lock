@@ -240,6 +240,13 @@
   dependencies:
     tslib "^1.9.0"
 
+"@auth0/angular-jwt@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@auth0/angular-jwt/-/angular-jwt-3.0.0.tgz#c484af3d6faadfa1b3b4beb0646b60a562ceed8e"
+  integrity sha512-Ky8hghnEx+CtCd097YXji08/LvLTG98IAEX/j1UgnutRDhQ31eczOohDn98v3i3MHNfLjfI3HdyxPK1Qc0IkZw==
+  dependencies:
+    url "^0.11.0"
+
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.0.0-beta.35", "@babel/code-frame@^7.5.5":
   version "7.5.5"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.5.5.tgz#bc0782f6d69f7b7d49531219699b988f669a8f9d"
@@ -5854,6 +5861,11 @@ jsprim@^1.2.2:
     extsprintf "1.3.0"
     json-schema "0.2.3"
     verror "1.10.0"
+
+just-intersect@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/just-intersect/-/just-intersect-3.1.0.tgz#448bf5cdb11ea17489bf3441c555aa0d68d31d08"
+  integrity sha512-067SEOhtX24TOJuQIZYor2PuIocRjCRwHEL+SRQBj0iuDf7ZQXR7w++cYnjMFBb5+W0SNWWz/Q7MpkCuen6U0A==
 
 karma-source-map-support@1.4.0:
   version "1.4.0"

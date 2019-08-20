@@ -8,10 +8,10 @@ export const AUTHENTICATION_FEATURE_KEY = 'authentication';
 export interface AuthenticationState {
   authenticated: boolean;
   error?: null | string; // last none error (if any)
-  privileges: null | string;
-  token: null | string;
+  privileges: string;
+  token: string;
   type: null | '0' | '1' | '2' | '3' | '4';
-  userId: null | string;
+  userId: string;
 }
 
 export interface AuthenticationPartialState {
@@ -28,7 +28,11 @@ const authenticationReducer = createReducer(
       ...state,
       ...authentication
     })
-  )
+  ),
+  on(AuthenticationActions.resetAuthentication, state => ({
+    ...state,
+    ...initialState
+  }))
 );
 
 export function reducer(

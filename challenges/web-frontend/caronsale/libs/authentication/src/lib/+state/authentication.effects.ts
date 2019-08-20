@@ -3,9 +3,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Actions, createEffect } from '@ngrx/effects';
 import { DataPersistence } from '@nrwl/angular';
-import { switchMap, take, tap } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { catchError, map, switchMap, take, tap } from 'rxjs/operators';
 import { AuthenticationService } from '../authentication.service';
 import * as AuthenticationActions from './authentication.actions';
+import { AuthenticationFacade } from './authentication.facade';
 import { AuthenticationPartialState } from './authentication.reducer';
 
 @Injectable()
@@ -37,19 +39,78 @@ export class AuthenticationEffects {
           switchMap(authentication => {
             return [
               AuthenticationActions.sendAuthenticationSuccess({
-                authentication
+                authentication,
+                navTargets: action.navTargets
               })
             ];
-          }),
-          tap(() => this.router.navigate([action.navTarget]))
+          })
         );
       }
     })
   );
+
+  sendAuthenticationSuccess$ = createEffect(() =>
+    this.dataPersistence.fetch(
+      AuthenticationActions.sendAuthenticationSuccess,
+      {
+        onError: (
+          action: ReturnType<typeof AuthenticationActions.sendAuthenticationSuccess>,
+          error
+        ) => {
+          console.error('Error', error);
+          return null
+        },
+        run: (
+          action: ReturnType<
+            typeof AuthenticationActions.sendAuthenticationSuccess
+          >,
+          state: AuthenticationPartialState
+        ) => {
+          return this.authenticationFacade.authenticationState$.pipe(
+            take(1),
+            map(authentication => action.navTargets[authentication.privileges]),
+            map(link =>
+              this.router.navigate([link])
+            ),
+            catchError(e=>of(e)),
+            switchMap(() => {
+              return [];
+            })
+          );
+        }
+      }
+    )
+  );
+
+  resetAuthentication$ = createEffect(() =>
+    this.dataPersistence.fetch(AuthenticationActions.resetAuthentication, {
+      onError: (
+        action: ReturnType<typeof AuthenticationActions.resetAuthentication>,
+        error
+      ) => {
+        console.error('Error', error);
+        return null
+      },
+      run: (
+        action: ReturnType<typeof AuthenticationActions.resetAuthentication>,
+        state: AuthenticationPartialState
+      ) => {
+        return of(['/']).pipe(
+          map(link => this.router.navigate(link)),
+          catchError(e=>of(e)),
+          switchMap(() => {
+            return [];
+          })
+        );
+      }
+    })
+  );
+
   constructor(
     private actions$: Actions,
     private dataPersistence: DataPersistence<AuthenticationPartialState>,
     private authenticationService: AuthenticationService,
+    private authenticationFacade: AuthenticationFacade,
     private _snackBar: MatSnackBar,
     private router: Router
   ) {}

@@ -1,5 +1,4 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import * as fromConsts from '../authentication.consts';
 import {
   AUTHENTICATION_FEATURE_KEY,
   AuthenticationPartialState,
@@ -12,7 +11,7 @@ export const getAuthenticationState = createFeatureSelector<
   AuthenticationState
 >(AUTHENTICATION_FEATURE_KEY);
 
-export const getAuthenticated = createSelector(
+export const isAuthenticated = createSelector(
   getAuthenticationState,
-  (state: AuthenticationState) => state
+  (state: AuthenticationState) => state.authenticated
 );

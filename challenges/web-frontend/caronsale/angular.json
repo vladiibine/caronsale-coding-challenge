@@ -31,6 +31,33 @@
       "schematics": {},
       "sourceRoot": "libs/authentication/src"
     },
+    "buyer": {
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "exclude": ["**/node_modules/**", "!libs/buyer/**"],
+            "tsConfig": [
+              "libs/buyer/tsconfig.lib.json",
+              "libs/buyer/tsconfig.spec.json"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/buyer/jest.config.js",
+            "setupFile": "libs/buyer/src/test-setup.ts",
+            "tsConfig": "libs/buyer/tsconfig.spec.json"
+          }
+        }
+      },
+      "prefix": "caronsale",
+      "projectType": "library",
+      "root": "libs/buyer",
+      "schematics": {},
+      "sourceRoot": "libs/buyer/src"
+    },
     "car-on-sale": {
       "architect": {
         "build": {
@@ -202,33 +229,6 @@
       "root": "libs/ui",
       "schematics": {},
       "sourceRoot": "libs/ui/src"
-    },
-    "buyer": {
-      "projectType": "library",
-      "root": "libs/buyer",
-      "sourceRoot": "libs/buyer/src",
-      "prefix": "caronsale",
-      "architect": {
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "libs/buyer/tsconfig.lib.json",
-              "libs/buyer/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**", "!libs/buyer/**"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "libs/buyer/jest.config.js",
-            "tsConfig": "libs/buyer/tsconfig.spec.json",
-            "setupFile": "libs/buyer/src/test-setup.ts"
-          }
-        }
-      },
-      "schematics": {}
     }
   },
   "schematics": {
@@ -237,10 +237,13 @@
       "unitTestRunner": "jest"
     },
     "@nrwl/angular:library": {
-      "unitTestRunner": "jest"
+      "skipTests": true,
+      "spec": false
     },
     "@nrwl/angular:ngrx": {
       "facade": true,
+      "skipTests": true,
+      "spec": false,
       "syntax": "creators"
     },
     "@schematics/angular:component": {
