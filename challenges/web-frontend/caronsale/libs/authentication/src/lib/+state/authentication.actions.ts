@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { AuthenticationResult, LoginData } from './authentication.models';
+import { AuthenticationResultI, LoginData } from './authentication.models';
 
 export const sendAuthentication = createAction(
   '[Authentication] Send Authentication',
@@ -8,7 +8,7 @@ export const sendAuthentication = createAction(
 export const sendAuthenticationSuccess = createAction(
   '[Authentication] Send Authentication Success',
   props<{
-    authentication: AuthenticationResult;
+    authentication: AuthenticationResultI;
     navTargets: Record<string, string>;
   }>()
 );
