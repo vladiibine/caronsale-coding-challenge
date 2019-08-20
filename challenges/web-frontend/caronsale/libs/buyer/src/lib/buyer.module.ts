@@ -58,6 +58,10 @@ export const ROUTES: Routes = [
       useFactory: createBuyerOnlyGuard,
       deps: [AuthenticationFacade, Router]
     },
+    // {
+    //   provide: ErrorHandler,
+    //   useClass: AuthErrorHandler
+    // },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpConfigInterceptor,
