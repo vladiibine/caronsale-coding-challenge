@@ -41,6 +41,7 @@
     "jest": "24.1.0",
     "jest-preset-angular": "7.0.0",
     "js-sha512": "^0.8.0",
+    "ngrx-store-freeze": "^0.2.4",
     "ngrx-store-localstorage": "^8.0.0",
     "prettier": "1.16.4",
     "rxjs-tslint-rules": "^4.24.3",

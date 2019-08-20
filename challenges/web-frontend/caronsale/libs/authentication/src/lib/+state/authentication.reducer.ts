@@ -32,11 +32,7 @@ const authenticationReducer = createReducer(
       ...state,
       ...authentication
     })
-  ),
-  on(AuthenticationActions.resetAuthentication, state => ({
-    ...state,
-    ...initialState
-  }))
+  )
 );
 
 export function reducer(

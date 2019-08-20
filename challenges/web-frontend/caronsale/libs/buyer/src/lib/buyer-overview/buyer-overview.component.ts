@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuctionsService } from '@caronsale/auctions';
 
 @Component({
   selector: 'caronsale-buyer-overview',
@@ -6,10 +7,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./buyer-overview.component.styl']
 })
 export class BuyerOverviewComponent implements OnInit {
-
-  constructor() { }
+  constructor(private auctionsService: AuctionsService) {}
 
   ngOnInit() {
+    this.auctionsService.getSalesmanAuction().subscribe(e => console.log(e));
   }
-
 }
