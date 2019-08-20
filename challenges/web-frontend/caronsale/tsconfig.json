@@ -11,13 +11,12 @@
     "moduleResolution": "node",
     "paths": {
       "*": ["types/*"],
+      "@caronsale/auctions": ["libs/auctions/src/index.ts"],
       "@caronsale/authentication": ["libs/authentication/src/index.ts"],
       "@caronsale/buyer": ["libs/buyer/src/index.ts"],
       "@caronsale/data": ["libs/data/src/index.ts"],
-      "@caronsale/ui": ["libs/ui/src/index.ts"],
-      "@caronsale/salesman": ["libs/salesman/src/index.ts"],
       "@caronsale/dealership": ["libs/dealership/src/index.ts"],
-      "@caronsale/auctions": ["libs/auctions/src/index.ts"]
+      "@caronsale/ui": ["libs/ui/src/index.ts"]
     },
     "rootDir": ".",
     "skipDefaultLibCheck": true,

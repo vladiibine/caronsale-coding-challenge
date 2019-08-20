@@ -15,10 +15,10 @@ import {
   HttpConfigInterceptor
 } from '@caronsale/authentication';
 import * as fromConsts from '@caronsale/authentication';
+import { BuyerOverviewComponent } from '@caronsale/ui';
 import { UiModule } from '@caronsale/ui';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { BuyerOverviewComponent } from './buyer-overview/buyer-overview.component';
 
 export function createBuyerOnlyGuard(
   authFacade: AuthenticationFacade,
@@ -49,8 +49,8 @@ export const ROUTES: Routes = [
     EffectsModule.forFeature(effects),
     RouterModule.forChild(ROUTES)
   ],
-  declarations: [BuyerOverviewComponent],
-  exports: [BuyerOverviewComponent],
+  declarations: [],
+  exports: [],
   providers: [
     AuthenticationFacade,
     SalesmanAuctionsFacade,

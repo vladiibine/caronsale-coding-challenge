@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {
-  SalesmanAuctionsEntity,
   SalesmanAuctionsFacade,
   SalesmanAuctionsViewI
 } from '@caronsale/auctions';
@@ -13,7 +12,6 @@ import { tap } from 'rxjs/operators';
   styleUrls: ['./buyer-overview.component.styl']
 })
 export class BuyerOverviewComponent implements OnInit {
-  // auctions: SalesmanAuctionsView[] = [];
   constructor(private salesmanAuctionsFacade: SalesmanAuctionsFacade) {
     this.salesmanAuctionsFacade.loadAll();
   }
