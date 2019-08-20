@@ -11,6 +11,9 @@
     "authentication": {
       "tags": []
     },
+    "buyer": {
+      "tags": []
+    },
     "car-on-sale": {
       "tags": []
     },
@@ -20,16 +23,10 @@
     "data": {
       "tags": []
     },
-    "ui": {
-      "tags": []
-    },
-    "buyer": {
-      "tags": []
-    },
-    "salesman": {
-      "tags": []
-    },
     "dealership": {
+      "tags": []
+    },
+    "ui": {
       "tags": []
     }
   }
