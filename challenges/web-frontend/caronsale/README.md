@@ -1,3 +1,34 @@
+# Known Issues
+
+- Chrome does not prompt to save credentials
+- If a login fails, the dialog should stay up
+  - MatDialog only allows to return it's form content data, when it is closed (??)
+- When clicking on 'Login' in the MenuBar the click animation does not finish
+
+# ToDo
+
+- persist store
+- sync angular router to NGRX
+- add JWT validity check
+
+# Commands
+
+## Serve project
+
+`yarn start`
+
+## Run watch server
+
+`yarn watch`
+
+## Run TypeScript file from command line
+
+`yarn tsn file.ts`
+
+## Remove unused Imports
+
+`yarn remove-unused-imports`
+
 # Caronsale
 
 This project was generated using [Nx](https://nx.dev).
@@ -82,24 +113,3 @@ Run `nx dep-graph` to see a diagram of the dependencies of your projects.
 ## Further help
 
 Visit the [Nx Documentation](https://nx.dev/angular) to learn more.
-
-# Other
-
-## Run watch server
-
-`yarn watch`
-
-## Run Typescript file from command line
-
-`yarn tsn file.ts`
-
-## Remove unused Imports
-
-`yarn remove-unused-imports`
-
-# Known Issues
-
-- Chrome does not prompt to save credentials
-- If a login fails, the dialog should stay up
-  - MatDialog only allows to return it's form content data, when it is closed
-- When clicking on 'Login' in the MenuBar the click-animation does not finish

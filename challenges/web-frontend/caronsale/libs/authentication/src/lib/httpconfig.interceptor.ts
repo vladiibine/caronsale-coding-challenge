@@ -10,7 +10,7 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map, switchMap, take } from 'rxjs/operators';
 import { AuthenticationFacade } from './+state/authentication.facade';
-import { AuthenticationResult } from './+state/authentication.models';
+import { AuthenticationState } from './+state/authentication.reducer';
 
 @Injectable()
 export class HttpConfigInterceptor implements HttpInterceptor {
@@ -23,7 +23,7 @@ export class HttpConfigInterceptor implements HttpInterceptor {
     console.log('INTERCEPT');
     return this.authenticationFacade.authenticationState$.pipe(
       take(1),
-      map((e: AuthenticationResult) => {
+      map((e: AuthenticationState) => {
         let headers: HttpHeaders = new HttpHeaders({
           'Content-Type': 'application/json'
         });

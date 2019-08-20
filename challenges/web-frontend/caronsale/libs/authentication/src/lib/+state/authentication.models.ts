@@ -10,10 +10,10 @@ export interface LoginData {
   password: string;
 }
 
-export interface AuthenticationResult {
+export interface AuthenticationResultI {
   authenticated: boolean;
   privileges: string;
   token: string;
-  type: null | '0' | '1' | '2' | '3' | '4';
+  type: null | number;
   userId: string;
 }

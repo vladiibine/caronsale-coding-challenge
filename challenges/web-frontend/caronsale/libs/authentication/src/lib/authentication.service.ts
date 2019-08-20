@@ -4,11 +4,13 @@ import { sha512 } from 'js-sha512';
 import { Observable, of } from 'rxjs';
 import { shareReplay } from 'rxjs/operators';
 import {
-  AuthenticationResult,
+  AuthenticationResultI,
   LoginData
 } from './+state/authentication.models';
 
+import { ANONYMOUS_USER } from './+state/authentication.reducer';
 import * as fromConsts from './authentication.consts';
+export const authenticationUrl = fromConsts.baseURL + '/authentication/';
 
 @Injectable({
   providedIn: 'root'
@@ -29,11 +31,11 @@ export class AuthenticationService {
 
   constructor(private http: HttpClient) {}
 
-  login({ email, password }: LoginData): Observable<AuthenticationResult> {
+  login({ email, password }: LoginData): Observable<AuthenticationResultI> {
     const passwordHash = this.hashPasswordWithCycles(password, 5);
     return this.http
-      .put<AuthenticationResult>(
-        fromConsts.authenticationUrl + email,
+      .put<AuthenticationResultI>(
+        authenticationUrl + email,
         {
           password: passwordHash
         },
@@ -45,7 +47,7 @@ export class AuthenticationService {
       );
   }
 
-  logout(): Observable<AuthenticationResult> {
-    return of(fromConsts.ANONYMOUS_USER);
+  logout(): Observable<AuthenticationResultI> {
+    return of(ANONYMOUS_USER);
   }
 }
