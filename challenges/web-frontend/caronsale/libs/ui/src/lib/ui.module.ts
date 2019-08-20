@@ -21,6 +21,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { AuctionCardComponent } from './auction-card/auction-card.component';
+import { BuyerOverviewComponent } from './buyer-overview/buyer-overview.component';
 import { LoginDialogComponent } from './login-dialog/login-dialog.component';
 import { MenuBarComponent } from './menu-bar/menu-bar.component';
 
@@ -50,8 +51,18 @@ import { MenuBarComponent } from './menu-bar/menu-bar.component';
     MatSelectModule,
     MatDatepickerModule
   ],
-  declarations: [MenuBarComponent, LoginDialogComponent, AuctionCardComponent],
-  exports: [MenuBarComponent, LoginDialogComponent, AuctionCardComponent],
+  declarations: [
+    MenuBarComponent,
+    LoginDialogComponent,
+    AuctionCardComponent,
+    BuyerOverviewComponent
+  ],
+  exports: [
+    MenuBarComponent,
+    LoginDialogComponent,
+    AuctionCardComponent,
+    BuyerOverviewComponent
+  ],
   entryComponents: [LoginDialogComponent]
 })
 export class UiModule {}
