@@ -7,6 +7,11 @@ const routes: Routes = [
     loadChildren: () => import('@caronsale/buyer').then(mod => mod.BuyerModule)
   },
   {
+    path: 'dealership',
+    loadChildren: () =>
+      import('@caronsale/dealership').then(mod => mod.DealershipModule)
+  },
+  {
     path: '**',
     redirectTo: '/'
   }
