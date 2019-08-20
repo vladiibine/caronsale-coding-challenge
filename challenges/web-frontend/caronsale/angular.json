@@ -229,6 +229,33 @@
       "root": "libs/ui",
       "schematics": {},
       "sourceRoot": "libs/ui/src"
+    },
+    "dealership": {
+      "projectType": "library",
+      "root": "libs/dealership",
+      "sourceRoot": "libs/dealership/src",
+      "prefix": "caronsale",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/dealership/tsconfig.lib.json",
+              "libs/dealership/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/dealership/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/dealership/jest.config.js",
+            "tsConfig": "libs/dealership/tsconfig.spec.json",
+            "setupFile": "libs/dealership/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {}
     }
   },
   "schematics": {

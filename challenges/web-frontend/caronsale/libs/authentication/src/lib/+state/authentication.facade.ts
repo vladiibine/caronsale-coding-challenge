@@ -7,9 +7,7 @@ import * as AuthenticationSelectors from './authentication.selectors';
 
 @Injectable()
 export class AuthenticationFacade {
-  // authenticationState$ = this.store.pipe(
-  //   select(AuthenticationSelectors.getAuthenticated)
-  // );
+
   isAuthenticated$ = this.store.pipe(
     select(AuthenticationSelectors.isAuthenticated)
   );

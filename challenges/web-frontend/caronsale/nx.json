@@ -25,6 +25,12 @@
     },
     "buyer": {
       "tags": []
+    },
+    "salesman": {
+      "tags": []
+    },
+    "dealership": {
+      "tags": []
     }
   }
 }
