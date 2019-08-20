@@ -8,7 +8,6 @@ import * as fromConsts from '@caronsale/authentication';
 })
 export class AppComponent {
   title = 'car-on-sale';
-  nav = '/buyer';
 
   navLinks: Record<string, string> = {
     [fromConsts.userPrivileges.buyer]: '/buyer',
