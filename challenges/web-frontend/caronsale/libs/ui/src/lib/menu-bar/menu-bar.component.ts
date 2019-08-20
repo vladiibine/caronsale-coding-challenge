@@ -2,11 +2,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import {
   AuthenticationFacade,
-  AuthenticationState,
   LoginData
 } from '@caronsale/authentication';
 import { Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
 
 @Component({

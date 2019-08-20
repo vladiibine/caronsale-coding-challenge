@@ -54,11 +54,13 @@ export class AuthenticationEffects {
       AuthenticationActions.sendAuthenticationSuccess,
       {
         onError: (
-          action: ReturnType<typeof AuthenticationActions.sendAuthenticationSuccess>,
+          action: ReturnType<
+            typeof AuthenticationActions.sendAuthenticationSuccess
+          >,
           error
         ) => {
           console.error('Error', error);
-          return null
+          return null;
         },
         run: (
           action: ReturnType<
@@ -69,10 +71,8 @@ export class AuthenticationEffects {
           return this.authenticationFacade.authenticationState$.pipe(
             take(1),
             map(authentication => action.navTargets[authentication.privileges]),
-            map(link =>
-              this.router.navigate([link])
-            ),
-            catchError(e=>of(e)),
+            map(link => this.router.navigate([link])),
+            catchError(e => of(e)),
             switchMap(() => {
               return [];
             })
@@ -89,7 +89,7 @@ export class AuthenticationEffects {
         error
       ) => {
         console.error('Error', error);
-        return null
+        return null;
       },
       run: (
         action: ReturnType<typeof AuthenticationActions.resetAuthentication>,
@@ -97,7 +97,7 @@ export class AuthenticationEffects {
       ) => {
         return of(['/']).pipe(
           map(link => this.router.navigate(link)),
-          catchError(e=>of(e)),
+          catchError(e => of(e)),
           switchMap(() => {
             return [];
           })

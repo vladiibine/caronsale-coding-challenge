@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuctionsService } from '@caronsale/auctions';
+import { SalesmanAuctionsFacade } from '@caronsale/auctions';
 
 @Component({
   selector: 'caronsale-buyer-overview',
@@ -7,9 +7,9 @@ import { AuctionsService } from '@caronsale/auctions';
   styleUrls: ['./buyer-overview.component.styl']
 })
 export class BuyerOverviewComponent implements OnInit {
-  constructor(private auctionsService: AuctionsService) {}
+  constructor(private salesmanAuctionsFacade: SalesmanAuctionsFacade) {}
 
   ngOnInit() {
-    this.auctionsService.getSalesmanAuction().subscribe(e => console.log(e));
+    this.salesmanAuctionsFacade.loadAll();
   }
 }
