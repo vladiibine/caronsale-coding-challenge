@@ -9,18 +9,20 @@ import { AuthenticationFacade } from '@caronsale/authentication';
   styleUrls: ['./dealership-overview.component.styl']
 })
 export class DealershipOverviewComponent implements OnInit {
-
   constructor(
     private _snackBar: MatSnackBar,
     private router: Router,
     private authenticationFacade: AuthenticationFacade
-  ) { }
+  ) {}
 
   ngOnInit() {
-    this._snackBar.open('We are sorry, this site is closed for dealerships at the moment!', 'Ok', {
-      duration: 3000
-    });
+    this._snackBar.open(
+      'We are sorry, this site is closed for dealerships at the moment!',
+      'Ok',
+      {
+        duration: 3000
+      }
+    );
     this.authenticationFacade.logOut();
   }
-
 }

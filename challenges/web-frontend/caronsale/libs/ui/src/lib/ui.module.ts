@@ -22,6 +22,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { AuctionCardComponent } from './auction-card/auction-card.component';
 import { BuyerOverviewComponent } from './buyer-overview/buyer-overview.component';
+import { DealershipOverviewComponent } from './dealership-overview/dealership-overview.component';
 import { LoginDialogComponent } from './login-dialog/login-dialog.component';
 import { MenuBarComponent } from './menu-bar/menu-bar.component';
 
@@ -55,13 +56,15 @@ import { MenuBarComponent } from './menu-bar/menu-bar.component';
     MenuBarComponent,
     LoginDialogComponent,
     AuctionCardComponent,
-    BuyerOverviewComponent
+    BuyerOverviewComponent,
+    DealershipOverviewComponent
   ],
   exports: [
     MenuBarComponent,
     LoginDialogComponent,
     AuctionCardComponent,
-    BuyerOverviewComponent
+    BuyerOverviewComponent,
+    DealershipOverviewComponent
   ],
   entryComponents: [LoginDialogComponent]
 })

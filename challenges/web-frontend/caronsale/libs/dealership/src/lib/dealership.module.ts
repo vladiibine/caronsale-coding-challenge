@@ -2,9 +2,14 @@ import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { Router, RouterModule, Routes } from '@angular/router';
-import { AuthenticationFacade, AuthenticationModule, AuthorizationGuard, HttpConfigInterceptor } from '@caronsale/authentication';
+import {
+  AuthenticationFacade,
+  AuthenticationModule,
+  AuthorizationGuard,
+  HttpConfigInterceptor
+} from '@caronsale/authentication';
 import * as fromConsts from '@caronsale/authentication';
-import { DealershipOverviewComponent } from './dealership-overview/dealership-overview.component';
+import { DealershipOverviewComponent } from '@caronsale/ui';
 
 export function createDealershipOnlyGuard(
   authFacade: AuthenticationFacade,
