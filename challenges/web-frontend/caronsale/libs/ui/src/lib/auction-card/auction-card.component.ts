@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { SalesmanAuctionsViewI } from '@caronsale/auctions';
+import { SalesmanAuctionsView } from '@caronsale/auctions';
 
 @Component({
   selector: 'caronsale-auction-card',
@@ -7,7 +7,7 @@ import { SalesmanAuctionsViewI } from '@caronsale/auctions';
   styleUrls: ['./auction-card.component.styl']
 })
 export class AuctionCardComponent implements OnInit {
-  @Input() auctions!: SalesmanAuctionsViewI[];
+  @Input() auctions!: SalesmanAuctionsView[];
   constructor() {}
 
   ngOnInit() {}

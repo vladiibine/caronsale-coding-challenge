@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {
   SalesmanAuctionsFacade,
-  SalesmanAuctionsViewI
+  SalesmanAuctionsView
 } from '@caronsale/auctions';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -16,7 +16,7 @@ export class BuyerOverviewComponent implements OnInit {
     this.salesmanAuctionsFacade.loadAll();
   }
   auctions$: Observable<
-    SalesmanAuctionsViewI[]
-  > = this.salesmanAuctionsFacade.salesmanAuctionsList$.pipe(tap(console.log));
+    SalesmanAuctionsView[]
+  > = this.salesmanAuctionsFacade.salesmanAuctionsView$.pipe(tap(console.log));
   ngOnInit() {}
 }
