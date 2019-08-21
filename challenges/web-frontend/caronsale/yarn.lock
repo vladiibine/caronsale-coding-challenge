@@ -200,6 +200,13 @@
   dependencies:
     tslib "^1.9.0"
 
+"@angular/flex-layout@^8.0.0-beta.26":
+  version "8.0.0-beta.26"
+  resolved "https://registry.yarnpkg.com/@angular/flex-layout/-/flex-layout-8.0.0-beta.26.tgz#05807e4daeb7c70da5653b681f8e8c0da87d133e"
+  integrity sha512-lXDLlMSNQhidW0grvisIsj/3gqLuYyN2MvABuRYybnFTc233sXGZuOAaulqq663LA0/DP/GNcz6a+A4ZAAlmPA==
+  dependencies:
+    tslib "^1.7.1"
+
 "@angular/forms@^8.0.0":
   version "8.2.2"
   resolved "https://registry.yarnpkg.com/@angular/forms/-/forms-8.2.2.tgz#8e06255942615b6d4b550f645d5e647d600f84c1"
@@ -6619,6 +6626,13 @@ ngrx-store-localstorage@^8.0.0:
   integrity sha512-3AHqw1AeXDXU/Hgxlh5fjP/srgGuP8BJR2uQ6ViGLeKwMEQDZuQfwd8zu9+bPZcvIxbAcxjWoGCVJXYEkBlxmg==
   dependencies:
     deepmerge "^3.2.0"
+
+ngx-img-fallback@^1.3.4:
+  version "1.3.4"
+  resolved "https://registry.yarnpkg.com/ngx-img-fallback/-/ngx-img-fallback-1.3.4.tgz#727c4ff19ca7afb2a4ae450c52a6bd4449bf74eb"
+  integrity sha512-B0MjhSD8q4oDg2qLq5XS2MMzNLydRyBC8Se6WfqrDGxB8FanNHshWOKwlTafsywkU7qB1L/BzxrVu24ogPsI3g==
+  dependencies:
+    tslib "^1.9.0"
 
 nice-try@^1.0.4:
   version "1.0.5"

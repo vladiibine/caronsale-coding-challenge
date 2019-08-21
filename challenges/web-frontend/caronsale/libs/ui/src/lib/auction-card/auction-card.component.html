@@ -1,1 +1,19 @@
-<p>action-card works!</p>
+<mat-grid-list [cols]="cols | async" gutterSize="8px" rowHeight="350px">
+  <mat-grid-tile *ngFor="let auction of auctions" class="grid-tile">
+    <mat-card class="auction-card mat-elevation-z2" mat-accent>
+      <mat-card-header>
+        <mat-card-title>{{ auction.id }}</mat-card-title>
+      </mat-card-header>
+      <div class="image-container">
+        <img
+          [src-fallback]="imagePlaceholder"
+          [src]="auction.imageUrl"
+          class="card-image"
+        />
+      </div>
+      <mat-card-content>
+        <p>{{ auction.vehicleData.mileageInKm }}</p>
+      </mat-card-content>
+    </mat-card>
+  </mat-grid-tile>
+</mat-grid-list>
