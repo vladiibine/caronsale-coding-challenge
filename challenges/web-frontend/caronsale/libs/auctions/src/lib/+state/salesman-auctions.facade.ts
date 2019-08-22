@@ -20,7 +20,10 @@ export class SalesmanAuctionsFacade {
   );
   salesmanAuctionsList$ = this.store.pipe(
     select(SalesmanAuctionsSelectors.getSalesmanAuctionsList),
-    // tap(console.log)
+    filter((e: any[]) => !!e && e.length > 0)
+  );
+  salesmanAuctionsView$ = this.store.pipe(
+    select(SalesmanAuctionsSelectors.getSalesmanAuctionView),
     filter((e: any[]) => !!e && e.length > 0)
   );
 

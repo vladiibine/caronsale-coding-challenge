@@ -5,12 +5,16 @@
   - MatDialog only allows to return it's form content data, when it is closed (??)
 - When clicking on 'Login' in the MenuBar the click animation does not finish
 - auth-error-handler is not working
+- when navigating to '/' while logged in, the user should be redirected
 
 # ToDo
 
 - persist store
 - sync angular router to NGRX
 - add JWT validity check
+- when logged in, always navigate to buyer
+- add offline indicator. auction data could be too old
+- better styling with Angular Material
 
 # Commands
 

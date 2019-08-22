@@ -49,7 +49,7 @@ export const ROUTES: Routes = [
     EffectsModule.forFeature(effects),
     RouterModule.forChild(ROUTES)
   ],
-  declarations: [],
+  // declarations: [ImgFallbackModule],
   exports: [],
   providers: [
     AuthenticationFacade,

@@ -10,6 +10,7 @@ import {
 } from '@caronsale/authentication';
 import * as fromConsts from '@caronsale/authentication';
 import { DealershipOverviewComponent } from '@caronsale/ui';
+import { UiModule } from '@caronsale/ui';
 
 export function createDealershipOnlyGuard(
   authFacade: AuthenticationFacade,
@@ -32,13 +33,13 @@ export const ROUTES: Routes = [
 
 @NgModule({
   imports: [
+    UiModule,
     CommonModule,
     HttpClientModule,
     AuthenticationModule,
     RouterModule.forChild(ROUTES)
   ],
-  declarations: [DealershipOverviewComponent],
-  exports: [DealershipOverviewComponent],
+  exports: [],
   providers: [
     AuthenticationFacade,
     {

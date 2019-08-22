@@ -1,4 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { SalesmanAuctionsView } from './salesman-auctions.models';
+import { VehicleData } from './salesman-auctions.models';
 import {
   SALESMANAUCTIONS_FEATURE_KEY,
   SalesmanAuctionsPartialState,
@@ -49,4 +51,30 @@ export const getSelected = createSelector(
 export const getSalesmanAuctionsList = createSelector(
   getSalesmanAuctionsState,
   fromSalesmanAuctionsReducer.selectAll
+);
+
+export const getSalesmanAuctionView = createSelector(
+  getSalesmanAuctionsList,
+  (auctionsList: any[]): any => {
+    return auctionsList.map(auction => {
+      const vehicle = auction.associatedVehicle;
+      const imageUrl = vehicle.imageUrls.front.url;
+      const vehicleData: VehicleData = {
+        ez: vehicle.ez,
+        fuelTypeText: vehicle.fuelType === '0' ? 'Diesel' : 'Gasoline',
+        mileageInKm: vehicle.mileageInKm,
+        transmissionText: vehicle.fuelType === '0' ? 'Manual' : 'Automatic'
+      };
+      const auctionView: Partial<SalesmanAuctionsView> = {
+        amIHighestBidder: auction.amIHighestBidder,
+        currentHighestBidValue: auction.currentHighestBidValue,
+        endingTime: auction.endingTime,
+        id: auction.id,
+        imageUrl,
+        label: auction.label,
+        vehicleData
+      };
+      return new SalesmanAuctionsView(auctionView);
+    });
+  }
 );
