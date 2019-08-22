@@ -11,14 +11,15 @@ export interface SalesmanAuctionsView {
   endingTime: string;
   id: number;
   imageUrl: string;
+  label: string;
   vehicleData: VehicleData;
 }
 
 export interface VehicleData {
   ez: string;
-  fuelType: string;
+  fuelTypeText: string;
   mileageInKm: string;
-  transmission: string;
+  transmissionText: string;
 }
 
 // export interface VehicleImageUrl {

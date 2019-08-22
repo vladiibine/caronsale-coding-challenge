@@ -1,8 +1,8 @@
-<mat-grid-list [cols]="cols | async" gutterSize="8px" rowHeight="350px">
+<mat-grid-list [cols]="cols | async" gutterSize="8px" rowHeight="400px">
   <mat-grid-tile *ngFor="let auction of auctions">
     <mat-card class="auction-card mat-elevation-z2">
       <mat-card-header>
-        <mat-card-title>{{ auction.id }}</mat-card-title>
+        <mat-card-title>{{ auction.label }}</mat-card-title>
       </mat-card-header>
       <div class="image-container">
         <div
@@ -16,7 +16,34 @@
         />
       </div>
       <mat-card-content>
-        <p>{{ auction.vehicleData.mileageInKm }}</p>
+        <mat-grid-list cols="2" gutterSize="1px" rowHeight="30px" rows="2">
+          <mat-grid-tile>
+            <p>Milage: {{ auction.vehicleData.mileageInKm }}</p></mat-grid-tile
+          >
+          <mat-grid-tile
+            ><p>Registration: {{ auction.vehicleData.ez }}</p></mat-grid-tile
+          >
+          <mat-grid-tile
+            ><p>
+              Fuel:
+              {{ auction.vehicleData.fuelTypeText }}
+            </p></mat-grid-tile
+          >
+          <mat-grid-tile
+            ><p>
+              Transmission:
+              {{ auction.vehicleData.transmissionText }}
+            </p></mat-grid-tile
+          >
+        </mat-grid-list>
+        <p>
+          HighestB:
+          {{ auction.amIHighestBidder }}
+        </p>
+        <p>
+          Bid:
+          {{ auction.currentHighestBidValue }}
+        </p>
       </mat-card-content>
     </mat-card>
   </mat-grid-tile>

@@ -62,9 +62,9 @@ export const getSalesmanAuctionView = createSelector(
       const imageUrl = vehicle.imageUrls.front.url;
       const vehicleData: VehicleData = {
         ez: vehicle.ez,
-        fuelType: vehicle.fuelType,
+        fuelTypeText: vehicle.fuelType === '0' ? 'diesel' : 'petrol',
         mileageInKm: vehicle.mileageInKm,
-        transmission: vehicle.transmission
+        transmissionText: vehicle.fuelType === '0' ? 'manual' : 'automatic'
       };
       return {
         amIHighestBidder: auction.amIHighestBidder,
@@ -72,6 +72,7 @@ export const getSalesmanAuctionView = createSelector(
         endingTime: auction.endingTime,
         id: auction.id,
         imageUrl,
+        label: auction.label,
         vehicleData
       };
     });
