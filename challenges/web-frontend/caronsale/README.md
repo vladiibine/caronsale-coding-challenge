@@ -11,6 +11,7 @@
 - persist store
 - sync angular router to NGRX
 - add JWT validity check
+- when logged in, always navigate to buyer
 
 # Commands
 
