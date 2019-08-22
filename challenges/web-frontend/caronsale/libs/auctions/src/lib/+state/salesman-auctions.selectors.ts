@@ -1,5 +1,4 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { Action } from 'rxjs/internal/scheduler/Action';
 import { SalesmanAuctionsView } from './salesman-auctions.models';
 import { VehicleData } from './salesman-auctions.models';
 import {
@@ -56,25 +55,27 @@ export const getSalesmanAuctionsList = createSelector(
 
 export const getSalesmanAuctionView = createSelector(
   getSalesmanAuctionsList,
-  (auctionsList: any[]): SalesmanAuctionsView[] => {
+  (auctionsList: any[]): any => {
     return auctionsList.map(auction => {
       const vehicle = auction.associatedVehicle;
       const imageUrl = vehicle.imageUrls.front.url;
       const vehicleData: VehicleData = {
         ez: vehicle.ez,
-        fuelTypeText: vehicle.fuelType === '0' ? 'diesel' : 'petrol',
+        fuelTypeText: vehicle.fuelType === '0' ? 'diesel' : 'gasoline',
         mileageInKm: vehicle.mileageInKm,
         transmissionText: vehicle.fuelType === '0' ? 'manual' : 'automatic'
       };
-      return {
+      const auctionView: SalesmanAuctionsView = {
         amIHighestBidder: auction.amIHighestBidder,
         currentHighestBidValue: auction.currentHighestBidValue,
         endingTime: auction.endingTime,
         id: auction.id,
         imageUrl,
         label: auction.label,
+        timeLeft$: auction.timeLeft$,
         vehicleData
       };
+      return new SalesmanAuctionsView(auctionView);
     });
   }
 );

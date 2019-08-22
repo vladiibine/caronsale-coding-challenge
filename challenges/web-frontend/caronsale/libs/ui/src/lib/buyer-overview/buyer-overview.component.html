@@ -1,1 +1,5 @@
-<caronsale-auction-card [auctions]="auctions$ | async"></caronsale-auction-card>
+<mat-grid-list [cols]="cols | async" gutterSize="8px" rowHeight="400px">
+  <mat-grid-tile *ngFor="let auction of (auctions$ | async)">
+    <caronsale-auction-card [auction]="auction"></caronsale-auction-card>
+  </mat-grid-tile>
+</mat-grid-list>
