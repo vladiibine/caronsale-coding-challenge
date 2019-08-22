@@ -22,6 +22,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ImgFallbackModule } from 'ngx-img-fallback';
+import { NgxTextOverflowClampModule } from 'ngx-text-overflow-clamp';
 import { AuctionCardComponent } from './auction-card/auction-card.component';
 import { BuyerOverviewComponent } from './buyer-overview/buyer-overview.component';
 import { DealershipOverviewComponent } from './dealership-overview/dealership-overview.component';
@@ -29,32 +30,18 @@ import { LoginDialogComponent } from './login-dialog/login-dialog.component';
 import { MenuBarComponent } from './menu-bar/menu-bar.component';
 @NgModule({
   imports: [
+    ReactiveFormsModule,
+    CommonModule,
+    NgxTextOverflowClampModule,
     ImgFallbackModule,
     MatGridListModule,
     MatSnackBarModule,
     MatInputModule,
     MatDialogModule,
-    ReactiveFormsModule,
-    CommonModule,
     MatIconModule,
     MatToolbarModule,
-    MatMenuModule,
     MatButtonModule,
-    MatIconModule,
-    MatCardModule,
-    MatTabsModule,
-    MatSidenavModule,
-    MatListModule,
-    MatToolbarModule,
-    MatInputModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatProgressSpinnerModule,
-    MatDialogModule,
-    MatSelectModule,
-    MatDatepickerModule,
-    FlexLayoutModule
+    MatCardModule
   ],
   declarations: [
     MenuBarComponent,

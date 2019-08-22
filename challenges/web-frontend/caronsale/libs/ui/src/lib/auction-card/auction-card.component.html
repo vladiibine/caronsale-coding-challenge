@@ -1,8 +1,8 @@
-<mat-grid-list [cols]="cols | async" gutterSize="8px" rowHeight="450px">
+<mat-grid-list [cols]="cols | async" gutterSize="8px" rowHeight="420px">
   <mat-grid-tile *ngFor="let auction of auctions">
     <mat-card class="auction-card mat-elevation-z2">
       <mat-card-header>
-        <mat-card-title class="line-clamp">{{ auction.label }}</mat-card-title>
+        <mat-card-title [clamp]="1">{{ auction.label }}</mat-card-title>
       </mat-card-header>
       <div class="image-container">
         <div
