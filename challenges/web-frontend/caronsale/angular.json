@@ -126,7 +126,7 @@
             "outputPath": "dist/apps/car-on-sale",
             "polyfills": "apps/car-on-sale/src/polyfills.ts",
             "scripts": [],
-            "styles": ["apps/car-on-sale/src/styles.styl"],
+            "styles": ["apps/car-on-sale/src/styles.scss"],
             "tsConfig": "apps/car-on-sale/tsconfig.app.json"
           }
         },
@@ -303,8 +303,7 @@
     "@schematics/angular:component": {
       "skipTests": true,
       "spec": false,
-      "style": "styl",
-      "styleext": "styl"
+      "style": "styl"
     },
     "@schematics/angular:guard": {
       "skipTests": true,
