@@ -12,15 +12,16 @@ export interface SalesmanAuctionsEntity {
 export class SalesmanAuctionsView {
   public amIHighestBidder = false;
   public currentHighestBidValue = 0;
-  public currentHighestBidValueString = '0';
+  public currentHighestBidValueText = '';
   public endingTime = '';
   public id = 0;
   public imageUrl = '';
   public label = '';
+  public milageInKmText = '';
   public vehicleData: VehicleData = {
     ez: '',
     fuelTypeText: '',
-    mileageInKm: '',
+    mileageInKm: 0,
     transmissionText: ''
   };
 
@@ -28,9 +29,11 @@ export class SalesmanAuctionsView {
 
   constructor(obj: any) {
     Object.assign(this, obj);
-    this.currentHighestBidValueString = this.currentHighestBidValue.toLocaleString(
+    this.currentHighestBidValueText = this.currentHighestBidValue.toLocaleString(
       'en'
     );
+    this.milageInKmText = this.vehicleData.mileageInKm.toLocaleString('en');
+    // parseFloat(this.vehicleData.mileageInKm).toLocaleString('en');
     this.timeLeft$ = timer(0, 1000).pipe(
       map(() => {
         const now = moment();
@@ -46,6 +49,6 @@ export class SalesmanAuctionsView {
 export interface VehicleData {
   ez: string;
   fuelTypeText: string;
-  mileageInKm: string;
+  mileageInKm: number;
   transmissionText: string;
 }

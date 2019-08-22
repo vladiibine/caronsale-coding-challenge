@@ -61,9 +61,9 @@ export const getSalesmanAuctionView = createSelector(
       const imageUrl = vehicle.imageUrls.front.url;
       const vehicleData: VehicleData = {
         ez: vehicle.ez,
-        fuelTypeText: vehicle.fuelType === '0' ? 'diesel' : 'gasoline',
+        fuelTypeText: vehicle.fuelType === '0' ? 'Diesel' : 'Gasoline',
         mileageInKm: vehicle.mileageInKm,
-        transmissionText: vehicle.fuelType === '0' ? 'manual' : 'automatic'
+        transmissionText: vehicle.fuelType === '0' ? 'Manual' : 'Automatic'
       };
       const auctionView: Partial<SalesmanAuctionsView> = {
         amIHighestBidder: auction.amIHighestBidder,
