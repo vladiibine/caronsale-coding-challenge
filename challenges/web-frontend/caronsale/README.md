@@ -12,6 +12,7 @@
 - sync angular router to NGRX
 - add JWT validity check
 - when logged in, always navigate to buyer
+- add offline indicator. auction data could be too old
 
 # Commands
 
