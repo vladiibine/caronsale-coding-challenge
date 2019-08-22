@@ -1,8 +1,17 @@
+
 $image-height = 146px
 
 .auction-card
+  background-color: $accent;
   width 100%
   height 80%
+  min-width: 300px
+  overflow hidden
+
+.line-clamp
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 
 .image-container
   height $image-height
@@ -30,3 +39,17 @@ $image-height = 146px
   max-width 100%
   min-width 200px
   filter blur(0px)
+
+
+::ng-deep mat-grid-tile .mat-grid-tile .mat-figure {
+    align-items: left;  /*vertical alignment*/
+    justify-content: left;  /*horizontal alignment*/
+}
+
+.green-color {
+  color: rgb(67, 219, 67) !important;
+}
+
+.red-color {
+  color: rgb(255, 66, 66) !important;
+}

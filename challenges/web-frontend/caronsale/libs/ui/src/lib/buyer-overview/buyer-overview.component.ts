@@ -18,7 +18,8 @@ export class BuyerOverviewComponent implements OnInit, OnDestroy {
   public cols: Observable<number | undefined> = of(1);
   public gridColsStart = 0;
 
-  loadAuctionsInterval = timer(0, 20000);
+  // loadAuctionsInterval = timer(0, 20000);
+  loadAuctionsInterval = timer(0, 2000000000000000);
 
   constructor(
     private salesmanAuctionsFacade: SalesmanAuctionsFacade,

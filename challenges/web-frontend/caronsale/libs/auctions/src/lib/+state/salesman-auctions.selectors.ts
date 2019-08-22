@@ -65,14 +65,13 @@ export const getSalesmanAuctionView = createSelector(
         mileageInKm: vehicle.mileageInKm,
         transmissionText: vehicle.fuelType === '0' ? 'manual' : 'automatic'
       };
-      const auctionView: SalesmanAuctionsView = {
+      const auctionView: Partial<SalesmanAuctionsView> = {
         amIHighestBidder: auction.amIHighestBidder,
         currentHighestBidValue: auction.currentHighestBidValue,
         endingTime: auction.endingTime,
         id: auction.id,
         imageUrl,
         label: auction.label,
-        timeLeft$: auction.timeLeft$,
         vehicleData
       };
       return new SalesmanAuctionsView(auctionView);

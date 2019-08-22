@@ -12,6 +12,7 @@ export interface SalesmanAuctionsEntity {
 export class SalesmanAuctionsView {
   public amIHighestBidder = false;
   public currentHighestBidValue = 0;
+  public currentHighestBidValueString = '0';
   public endingTime = '';
   public id = 0;
   public imageUrl = '';
@@ -27,6 +28,9 @@ export class SalesmanAuctionsView {
 
   constructor(obj: any) {
     Object.assign(this, obj);
+    this.currentHighestBidValueString = this.currentHighestBidValue.toLocaleString(
+      'en'
+    );
     this.timeLeft$ = timer(0, 1000).pipe(
       map(() => {
         const now = moment();
