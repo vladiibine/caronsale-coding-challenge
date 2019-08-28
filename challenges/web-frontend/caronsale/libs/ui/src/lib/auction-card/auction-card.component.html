@@ -1,0 +1,56 @@
+<mat-grid-list [cols]="cols | async" gutterSize="8px" rowHeight="420px">
+  <mat-grid-tile *ngFor="let auction of auctions">
+    <mat-card class="auction-card mat-elevation-z2">
+      <mat-card-header>
+        <mat-card-title [clamp]="1">{{ auction.label }}</mat-card-title>
+      </mat-card-header>
+      <div class="image-container">
+        <div
+          [style.background-image]="'url(' + auction.imageUrl + ')'"
+          class="image-background"
+        ></div>
+        <img
+          [src-fallback]="imagePlaceholder"
+          [src]="auction.imageUrl"
+          class="auction-image"
+        />
+      </div>
+      <mat-card-content>
+        <mat-grid-list cols="2" gutterSize="1px" rowHeight="30px" rows="2">
+          <mat-grid-tile>
+            <p>Milage: {{ auction.milageInKmText }} Km</p></mat-grid-tile
+          >
+          <mat-grid-tile
+            ><p>Registration: {{ auction.vehicleData.ez }}</p></mat-grid-tile
+          >
+          <mat-grid-tile
+            ><p>
+              Fuel:
+              {{ auction.vehicleData.fuelTypeText }}
+            </p></mat-grid-tile
+          >
+          <mat-grid-tile
+            ><p>
+              Transmission:
+              {{ auction.vehicleData.transmissionText }}
+            </p></mat-grid-tile
+          >
+        </mat-grid-list>
+        <p *ngIf="!!auction.amIHighestBidder" class="mat-h5 green-color">
+          You are the highest bidder!
+        </p>
+        <p *ngIf="!auction.amIHighestBidder" class="mat-h5 red-color">
+          Raise your bid!
+        </p>
+        <p>
+          Bid:
+          {{ auction.currentHighestBidValueText }}€
+        </p>
+        <p>
+          Auction ends in:
+          {{ auction.timeLeft$ | async }}
+        </p>
+      </mat-card-content>
+    </mat-card>
+  </mat-grid-tile>
+</mat-grid-list>

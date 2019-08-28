@@ -1,0 +1,14 @@
+<mat-toolbar color="primary">
+  <button
+    (click)="openLoginDialog()"
+    *ngIf="!(authenticated$ | async)"
+    mat-icon-button
+  >
+    <mat-icon>account_circle</mat-icon>
+    <span>LOGIN</span>
+  </button>
+  <button (click)="logOut()" *ngIf="(authenticated$ | async)" mat-icon-button>
+    <mat-icon>account_circle</mat-icon>
+    <span>LOGOUT </span>
+  </button>
+</mat-toolbar>
