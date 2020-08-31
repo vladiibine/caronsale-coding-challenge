@@ -7,3 +7,9 @@ build:
 
 test: build
 	docker run --rm -it caronsale-dev npm test
+
+run: build
+	docker run --rm -it caronsale-dev npm start
+
+ssh:
+	docker run --rm -it caronsale-dev /bin/bash
