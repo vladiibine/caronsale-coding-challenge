@@ -31,10 +31,10 @@ export class CarOnSaleClient implements ICarOnSaleClient {
             } catch (e) {
                 this.logger.log(`For some reason, can't get the auctions! Aborting!`);
 
-                return {
+                return Promise.resolve({
                     error: ERRORS.COULD_NOT_AUTHENTICATE,
                     data: null,
-                }
+                })
             }
         }
         // The result contains a "userId" and a "token" field that have to be set as "userid" / "authtoken"
@@ -43,7 +43,7 @@ export class CarOnSaleClient implements ICarOnSaleClient {
             let baseUrl = this.config.getOption(ConfigOption.API_BASE_URL);
             let buyer_auctions = this.config.getOption(ConfigOption.API_BUYER_AUCTIONS);
 
-            axios.get(`${baseUrl}/${buyer_auctions}`,
+            this.http_client.get(`${baseUrl}/${buyer_auctions}`,
                 {
                     headers: {
                         'userid': this.userId,
@@ -54,7 +54,7 @@ export class CarOnSaleClient implements ICarOnSaleClient {
             .then(response => {
                 resolve({error: null, data: response.data})
             })
-                .catch(reason => {this.logger.log(`Couldn't get the auction information: ${reason}`)})
+                .catch(reason => {this.logger.log(`Couldn't get the auction information: ${reason}`); reject(reason)})
         });
     }
 
