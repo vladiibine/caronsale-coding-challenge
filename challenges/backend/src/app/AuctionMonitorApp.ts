@@ -20,7 +20,6 @@ export class AuctionMonitorApp {
         let auctions = await this.carOnSaleClient.getRunningAuctions();
 
         if (auctions.error) {
-            this.logger.log(`For some reason, can't get the auctions! Aborting!`);
             process.exit(-1);  //and of course, by -1, we mean 255
 
         } else {

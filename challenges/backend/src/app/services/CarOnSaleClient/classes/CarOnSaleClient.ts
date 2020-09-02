@@ -1,32 +1,36 @@
 import * as crypto from 'crypto';
-import {injectable, inject} from "inversify";
-import {default as axios} from 'axios';
+import {inject, injectable} from "inversify";
+import {AxiosStatic, default as axios} from 'axios';
 
-import {ICarOnSaleClient, ERRORS, IApiResult} from "../interface/ICarOnSaleClient";
+import {ERRORS, IApiResult, ICarOnSaleClient} from "../interface/ICarOnSaleClient";
 import {DependencyIdentifier} from "../../../DependencyIdentifiers";
-
-export const BASE_URL = `https://caronsale-backend-service-dev.herokuapp.com`;
+import {ConfigOption, IConfig} from "../../Config/interface/IConfig";
+import {ILogger} from "../../Logger/interface/ILogger";
 
 @injectable()
 export class CarOnSaleClient implements ICarOnSaleClient {
-    private userMailId: string = 'salesman@random.com';
-    // private userMailId: string = 'salesman';
-    private password: string = '123test';
-
     private authToken: string = null;
     private userId: string = null;
 
     public constructor(
-        @inject(DependencyIdentifier.LOGGER) private logger
+        @inject(DependencyIdentifier.LOGGER) private logger: ILogger,
+        @inject(DependencyIdentifier.CONFIG) private config: IConfig,
+        @inject(DependencyIdentifier.HTTP_CLIENT) private http_client: AxiosStatic,
     ) {
     }
 
     async getRunningAuctions(): Promise<IApiResult> {
-        if (this.authToken == null) {
+        if (this.authToken === null) {
             try {
-                await this.authenticate();
+                let {authToken, userId} = await CarOnSaleClient.authenticate(this.config, this.http_client);
+                this.authToken = authToken;
+                this.userId = userId;
+
+                this.logger.log(`Successfully authenticated!`);
 
             } catch (e) {
+                this.logger.log(`For some reason, can't get the auctions! Aborting!`);
+
                 return {
                     error: ERRORS.COULD_NOT_AUTHENTICATE,
                     data: null,
@@ -36,7 +40,10 @@ export class CarOnSaleClient implements ICarOnSaleClient {
         // The result contains a "userId" and a "token" field that have to be set as "userid" / "authtoken"
         // HTTP header in further requests.
         return new Promise((resolve, reject) => {
-            axios.get(`${BASE_URL}/api/v2/auction/buyer/`,
+            let baseUrl = this.config.getOption(ConfigOption.API_BASE_URL);
+            let buyer_auctions = this.config.getOption(ConfigOption.API_BUYER_AUCTIONS);
+
+            axios.get(`${baseUrl}/${buyer_auctions}`,
                 {
                     headers: {
                         'userid': this.userId,
@@ -61,16 +68,19 @@ export class CarOnSaleClient implements ICarOnSaleClient {
         return hash;
     }
 
-    private async authenticate() {
-        let path = `v2/auction/buyer`;
+    private static async authenticate(config: IConfig, http_client: AxiosStatic): Promise<{authToken: string, userId: string}> {
+        let apiBaseUrl = config.getOption(ConfigOption.API_BASE_URL);
+        let apiAuthenticationPath = config.getOption(ConfigOption.API_AUTHENTICATION_ENDPOINT);
+        let userEmailId = config.getOption(ConfigOption.USER_EMAIL_ID);
 
-        let endpoint = `${BASE_URL}/${path}`;
-        let authEndpoint = `${BASE_URL}/api/v1/authentication/${this.userMailId}`;
+        let authEndpoint = `${apiBaseUrl}/${apiAuthenticationPath}/${userEmailId}`;
 
-        let authResult = await axios.put(
+        let authResult = await http_client.put(
             `${authEndpoint}`,
             {
-                password: CarOnSaleClient.hashPassword(this.password),
+                password: CarOnSaleClient.hashPassword(
+                    config.getOption(ConfigOption.PASSWORD)
+                ),
             },
             {
                 headers: {
@@ -79,9 +89,6 @@ export class CarOnSaleClient implements ICarOnSaleClient {
             }
         );
 
-        this.logger.log('Successfully authenticated!');
-
-        this.authToken = authResult.data.token;
-        this.userId = authResult.data.userId;
+        return {authToken: authResult.data.token, userId: authResult.data.userId}
     }
 }
