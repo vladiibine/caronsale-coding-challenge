@@ -88,6 +88,32 @@ describe('CarOnSaleClient unit', () => {
         });
     });
 
+    context("getRunningAuctions", () => {
+        // TODO - try to mock the self object...or make use of dep.injection
+        it("Calls dependencies properly, happy flow", () => {
+            let authenticate_stub = sinon.stub(CarOnSaleClient, 'authenticate');
+            authenticate_stub.resolves({authToken: 'noop-4rv', userId: 'noop-c93nf'});
+
+            let logger_mock = sinon.fake();
+            logger_mock.log = sinon.fake();
+            let config_mock = sinon.fake();
+            config_mock.getOption = sinon.fake();
+            let http_client_mock = sinon.fake();
+            http_client_mock.get = sinon.stub().resolves({data:'noop-nr324'});
+
+            let client = new CarOnSaleClient(
+                logger_mock, config_mock, http_client_mock
+            );
+
+            return client.getRunningAuctions().then( value => {
+                    //todo
+                    expect(1).to.equal(2)
+                })
+
+
+        });
+    });
+
     afterEach(() => {
         sinon.restore()
     });
