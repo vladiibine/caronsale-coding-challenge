@@ -58,7 +58,7 @@ export class CarOnSaleClient implements ICarOnSaleClient {
         });
     }
 
-    private static hashPassword(password: string): string {
+    static hashPassword(password: string): string {
         let hash = `${password}`;
 
         for (let i = 0; i < 5; i++) {
@@ -68,13 +68,12 @@ export class CarOnSaleClient implements ICarOnSaleClient {
         return hash;
     }
 
-    private static async authenticate(config: IConfig, http_client: AxiosStatic): Promise<{authToken: string, userId: string}> {
+    static async authenticate(config: IConfig, http_client: AxiosStatic): Promise<{authToken: string, userId: string}> {
         let apiBaseUrl = config.getOption(ConfigOption.API_BASE_URL);
         let apiAuthenticationPath = config.getOption(ConfigOption.API_AUTHENTICATION_ENDPOINT);
         let userEmailId = config.getOption(ConfigOption.USER_EMAIL_ID);
 
         let authEndpoint = `${apiBaseUrl}/${apiAuthenticationPath}/${userEmailId}`;
-
         let authResult = await http_client.put(
             `${authEndpoint}`,
             {
