@@ -21,7 +21,7 @@ export class AuctionMonitorApp {
 
         const auctions = await this.carOnSaleClient.getRunningAuctions();
 
-        if (auctions.error) {
+        if (auctions.error !== null) {
             process.exit(-1);  // and of course, by -1, we mean 255
 
         } else {
