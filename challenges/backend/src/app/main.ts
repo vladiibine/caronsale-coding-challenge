@@ -23,10 +23,6 @@ const container = new Container({
 /*
  * Register dependencies in DI environment.
  */
-interface AxiosInterface {
-    new (...args: any[]): AxiosStatic
-}
-
 container.bind<ILogger>(DependencyIdentifier.LOGGER).to(Logger);
 container.bind<ICarOnSaleClient>(DependencyIdentifier.CAR_ON_SALE_CLIENT).to(CarOnSaleClient);
 container.bind<IConfig>(DependencyIdentifier.CONFIG).to(Config);
