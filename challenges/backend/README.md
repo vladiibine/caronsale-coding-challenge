@@ -34,6 +34,8 @@ Additional Hints:
 If you have any questions, feel free to contact Fabian Roth via fabian.roth@caronsale.de
  
 # Solution
+I recommend having `docker` and `make` installed.
+An alternative solution is presented though, which doesn't require either `docker` or `make`.
 
 
 ## Running the application
@@ -47,14 +49,24 @@ Not using docker
 $ npm start
 ```
 
-## Running the tests from a docker container
-Prerequisites: make sure you have `docker` installed!
-
+## Running the tests
+From a docker container:
 ```bash
 $ make test
 ```
 
+Without using a docker container:
+```bash
+$ npm test
+```
+
 ## Running the linter
+Using docker:
 ```bash
 $ make tslint
+```
+
+Without using docker
+```
+$ npm run tslint
 ```
