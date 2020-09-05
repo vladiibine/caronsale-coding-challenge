@@ -334,7 +334,9 @@ describe('CarOnSaleClient unit', () => {
                 );
 
                 return client.getRunningAuctions()
-                    .then(value => {expect.fail("Was supposed to raise")})
+                    .then(value => {
+                        expect.fail("Was supposed to raise")
+                    })
                     .catch(reason => {
                         expect(loggerMock.log.getCalls())
                             .to.be.an('array')

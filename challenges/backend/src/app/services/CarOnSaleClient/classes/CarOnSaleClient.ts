@@ -28,7 +28,7 @@ export class CarOnSaleClient implements ICarOnSaleClient {
         return hash;
     }
 
-    public static async authenticate(config: IConfig, httpClient: AxiosStatic): Promise<{authToken: string, userId: string}> {
+    public static async authenticate(config: IConfig, httpClient: AxiosStatic): Promise<{ authToken: string, userId: string }> {
         const apiBaseUrl = config.getOption(ConfigOption.API_BASE_URL);
         const apiAuthenticationPath = config.getOption(ConfigOption.API_AUTHENTICATION_ENDPOINT);
         const userEmailId = config.getOption(ConfigOption.USER_EMAIL_ID);
@@ -90,21 +90,21 @@ export class CarOnSaleClient implements ICarOnSaleClient {
                     }
                 }
             )
-            .then(response => {
-                // VladA: left this line to help with debugging
-                // console.log(JSON.stringify(response.data))
-                // debugger
-                const validationResult = jsonschema.validate(response.data, API_DATA_SCHEMA);
+                .then(response => {
+                    // VladA: left this line to help with debugging
+                    // console.log(JSON.stringify(response.data))
+                    // debugger
+                    const validationResult = jsonschema.validate(response.data, API_DATA_SCHEMA);
 
-                if (validationResult.errors.length === 0){
-                    resolve({error: null, data: response.data})
+                    if (validationResult.errors.length === 0) {
+                        resolve({error: null, data: response.data})
 
-                } else{
-                    this.logger.log(`ERROR: API returned incorrect JSON: ${validationResult.toString()}`);
-                    reject({error: ERRORS.INCORRECT_SCHEMA, data: response.data})
-                }
+                    } else {
+                        this.logger.log(`ERROR: API returned incorrect JSON: ${validationResult.toString()}`);
+                        reject({error: ERRORS.INCORRECT_SCHEMA, data: response.data})
+                    }
 
-            })
+                })
                 .catch(reason => {
                     this.logger.log(`Couldn't get the auction information: ${reason}`);
                     reject(reason);

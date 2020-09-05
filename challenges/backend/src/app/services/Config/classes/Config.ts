@@ -22,7 +22,7 @@ export class Config implements IConfig {
     public getOption(option: ConfigOption): string {
         const result = CONFIGS[option];
 
-        if (result === undefined){
+        if (result === undefined) {
             throw new Error("Provided option doesn't exist!")
         } else {
             return result;
