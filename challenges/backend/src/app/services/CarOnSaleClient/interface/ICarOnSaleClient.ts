@@ -13,15 +13,18 @@ export interface IApiAuction {
     minimumRequiredAsk: number,
 }
 
+export interface IApiData {
+    items: [IApiAuction];
+    page: number;  // assuming current page number
+    total: number;  // assuming this means the total number of items. Could also mean total number of pages. Don't know
+}
+
 export interface IApiResult {
     error: string,
-    data: {
-        items: [IApiAuction],
-        page: number,  // assuming current page number
-        total: number,  // assuming this means the total number of items. Could also mean total number of pages. Don't know
-    },
+    data: IApiData,
 }
 
 export const ERRORS = {
     COULD_NOT_AUTHENTICATE: 'count_not_authenticate',
+    INCORRECT_SCHEMA: 'incorrect_schema',
 }

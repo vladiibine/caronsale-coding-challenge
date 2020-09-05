@@ -1,11 +1,14 @@
 import * as crypto from 'crypto';
 import {inject, injectable} from "inversify";
-import {AxiosStatic, default as axios} from 'axios';
+import {AxiosStatic} from 'axios';
+// import * as jsonschema from "jsonschema"; // can't stub things in imported modules
+let jsonschema = require('jsonschema');  // can only stub things out in required modules
 
 import {ERRORS, IApiResult, ICarOnSaleClient} from "../interface/ICarOnSaleClient";
 import {DependencyIdentifier} from "../../../DependencyIdentifiers";
 import {ConfigOption, IConfig} from "../../Config/interface/IConfig";
 import {ILogger} from "../../Logger/interface/ILogger";
+import {API_DATA_SCHEMA} from "../interface/schemas";
 
 @injectable()
 export class CarOnSaleClient implements ICarOnSaleClient {
@@ -41,9 +44,9 @@ export class CarOnSaleClient implements ICarOnSaleClient {
         // HTTP header in further requests.
         return new Promise((resolve, reject) => {
             let baseUrl = this.config.getOption(ConfigOption.API_BASE_URL);
-            let buyer_auctions = this.config.getOption(ConfigOption.API_BUYER_AUCTIONS);
+            let buyerAuctions = this.config.getOption(ConfigOption.API_BUYER_AUCTIONS);
 
-            this.http_client.get(`${baseUrl}/${buyer_auctions}`,
+            this.http_client.get(`${baseUrl}/${buyerAuctions}`,
                 {
                     headers: {
                         'userid': this.userId,
@@ -52,9 +55,24 @@ export class CarOnSaleClient implements ICarOnSaleClient {
                 }
             )
             .then(response => {
-                resolve({error: null, data: response.data})
+                // VladA: left this line to help with debugging
+                // console.log(JSON.stringify(response.data))
+                // debugger
+                let validationResult = jsonschema.validate(response.data, API_DATA_SCHEMA);
+
+                if (validationResult.errors.length === 0){
+                    resolve({error: null, data: response.data})
+
+                } else{
+                    this.logger.log(`ERROR: API returned incorrect JSON: ${validationResult.toString()}`);
+                    reject({error: ERRORS.INCORRECT_SCHEMA, data: response.data})
+                }
+
             })
-                .catch(reason => {this.logger.log(`Couldn't get the auction information: ${reason}`); reject(reason)})
+                .catch(reason => {
+                    this.logger.log(`Couldn't get the auction information: ${reason}`);
+                    reject(reason);
+                })
         });
     }
 
