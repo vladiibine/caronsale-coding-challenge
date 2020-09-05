@@ -19,8 +19,8 @@ const CONFIGS = {
  */
 @injectable()
 export class Config implements IConfig {
-    getOption(option: ConfigOption): string {
-        let result = CONFIGS[option];
+    public getOption(option: ConfigOption): string {
+        const result = CONFIGS[option];
 
         if (result === undefined){
             throw new Error("Provided option doesn't exist!")

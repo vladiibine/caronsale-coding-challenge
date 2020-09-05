@@ -5,14 +5,17 @@
 import 'mocha';
 import "reflect-metadata";
 import * as sinon from 'sinon';
+import {expect} from 'chai';
+
+/* tslint:disable */
 // import * as jsonschema from 'jsonschema';  // can't stub things when the module is imported
-let jsonschema = require('jsonschema');  // can only stub when the module is required
+const jsonschema = require('jsonschema');  // can only stub when the module is required
+/* tslint:enable */
 
 import * as CarOnSaleClient from "./CarOnSaleClient";
 import {ConfigOption} from "../../Config/interface/IConfig";
 import {ERRORS} from "../interface/ICarOnSaleClient";
 
-const expect = require('chai').expect;
 
 describe('CarOnSaleClient unit', () => {
     context(".hashPassword()", () => {
@@ -39,32 +42,32 @@ describe('CarOnSaleClient unit', () => {
          * @param success - whether the mocked authentication should succeed
          */
         function configureAuthenticateMocks(
-            token: string, userId: string, getOptionValues: Array<string>,
+            token: string, userId: string, getOptionValues: string[],
             success: boolean) {
-            let config_mock = sinon.fake();
+            const configMock = sinon.fake();
 
-            // config_mock.getOption = sinon.fake.returns(33);
-            config_mock.getOption = sinon.stub();
-            config_mock.getOption.onCall(0).returns(getOptionValues[0]);
-            config_mock.getOption.onCall(1).returns(getOptionValues[1]);
-            config_mock.getOption.onCall(2).returns(getOptionValues[2]);
-            config_mock.getOption.onCall(3).returns(getOptionValues[3]);
+            // configMock.getOption = sinon.fake.returns(33);
+            configMock.getOption = sinon.stub();
+            configMock.getOption.onCall(0).returns(getOptionValues[0]);
+            configMock.getOption.onCall(1).returns(getOptionValues[1]);
+            configMock.getOption.onCall(2).returns(getOptionValues[2]);
+            configMock.getOption.onCall(3).returns(getOptionValues[3]);
 
 
-            let http_client_mock = sinon.fake();
+            const httpClientMock = sinon.fake();
             if (success) {
-                http_client_mock.put = sinon.fake.resolves(
-                    {data: {token: token, userId: userId}}
+                httpClientMock.put = sinon.fake.resolves(
+                    {data: {token, userId}}
                 );
             } else {
-                http_client_mock.put = sinon.fake.rejects('noop');
+                httpClientMock.put = sinon.fake.rejects('noop');
             }
-            return {configMock: config_mock, httpClientMock: http_client_mock};
+            return {configMock, httpClientMock};
         }
 
         context("happy flow", () => {
             it("calls dependencies properly", () => {
-                let {configMock, httpClientMock} = configureAuthenticateMocks(
+                const {configMock, httpClientMock} = configureAuthenticateMocks(
                     'tokenAe2342n48',
                     'userId@419014nsd',
                     ['11', '22', '33'],
@@ -90,7 +93,7 @@ describe('CarOnSaleClient unit', () => {
             });
 
             it("Given dependency stubs, returns proper value", () => {
-                let {configMock, httpClientMock} = configureAuthenticateMocks(
+                const {configMock, httpClientMock} = configureAuthenticateMocks(
                     'token-4324ngfd',
                     'userId-24324',
                     ['', '', '', ''],
@@ -111,7 +114,7 @@ describe('CarOnSaleClient unit', () => {
 
         context("can't authenticate", () => {
             it('throws', () => {
-                let {configMock, httpClientMock} = configureAuthenticateMocks(
+                const {configMock, httpClientMock} = configureAuthenticateMocks(
                     'tokenAe2342n48',
                     'userId@419014nsd',
                     ['11', '22', '33'],
@@ -132,8 +135,8 @@ describe('CarOnSaleClient unit', () => {
     });
 
     context(".getRunningAuctions()", () => {
-        /**
-         "Official" mocking for the function. Would move this to a fixture file.
+        /** "Official" mocking for the function. Would move this to a fixture file.
+         *
          * @param authToken
          * @param userId
          * @param getOptionBaseUrl
@@ -156,23 +159,23 @@ describe('CarOnSaleClient unit', () => {
             validateApiData: boolean = false,
         ) {
 
-            let authenticateStub = sinon.stub(CarOnSaleClient.CarOnSaleClient, 'authenticate');
+            const authenticateStub = sinon.stub(CarOnSaleClient.CarOnSaleClient, 'authenticate');
             if (authSuccess) {
-                authenticateStub.resolves({authToken: authToken, userId: userId});
+                authenticateStub.resolves({authToken, userId});
             } else {
                 authenticateStub.rejects('noop');
             }
 
-            let loggerMock = sinon.fake();
+            const loggerMock = sinon.fake();
             loggerMock.log = sinon.fake();
 
-            let configMock = sinon.fake();
+            const configMock = sinon.fake();
             configMock.getOption = sinon.stub();
 
             configMock.getOption.onCall(0).returns(getOptionBaseUrl);
             configMock.getOption.onCall(1).returns(getOptionBuyerAuctions);
 
-            let httpClientMock = sinon.fake();
+            const httpClientMock = sinon.fake();
             if (apiSuccess) {
                 httpClientMock.get = sinon.stub().resolves({data: apiData});
             } else {
@@ -189,10 +192,10 @@ describe('CarOnSaleClient unit', () => {
 
         context("happy flow", () => {
             it("Calls dependencies properly", () => {
-                let {authenticateStub, loggerMock, configMock, httpClientMock} =
+                const {authenticateStub, loggerMock, configMock, httpClientMock} =
                     // use different mocked values, so the test code is searchable easier
                     configureGetRunningAuctionsMocks('3mr41', 'mrot4', '1rfe4', '4gmbNe', 'noop-nr324');
-                let client = new CarOnSaleClient.CarOnSaleClient(
+                const client = new CarOnSaleClient.CarOnSaleClient(
                     loggerMock, configMock, httpClientMock
                 );
 
@@ -208,15 +211,15 @@ describe('CarOnSaleClient unit', () => {
             });
 
             it("Returns a Promise<IApiResult>", () => {
-                let {loggerMock, configMock, httpClientMock} =
+                const {loggerMock, configMock, httpClientMock} =
                     configureGetRunningAuctionsMocks('noop-4rv', 'noop-c93nf', 'asdf3mn4', 'zxcv00mn', 'noop-cmr2');
 
-                let client = new CarOnSaleClient.CarOnSaleClient(
+                const client = new CarOnSaleClient.CarOnSaleClient(
                     loggerMock, configMock, httpClientMock
                 );
 
                 return client.getRunningAuctions().then(value => {
-                    let {error, data} = value;
+                    const {error, data} = value;
                     expect(error).to.be.null;
                     expect(data).to.equal('noop-cmr2');
                 });
@@ -227,7 +230,7 @@ describe('CarOnSaleClient unit', () => {
 
         context('error flow', () => {
             it("returns authentication failure error", () => {
-                let {authenticateStub, loggerMock, configMock, httpClientMock} =
+                const {authenticateStub, loggerMock, configMock, httpClientMock} =
                     // use different mocked values, so the test code is searchable easier
                     configureGetRunningAuctionsMocks(
                         'authToken234234h',
@@ -237,7 +240,7 @@ describe('CarOnSaleClient unit', () => {
                         'noop-nr324',
                         false,
                     );
-                let client = new CarOnSaleClient.CarOnSaleClient(
+                const client = new CarOnSaleClient.CarOnSaleClient(
                     loggerMock, configMock, httpClientMock
                 );
 
@@ -250,7 +253,7 @@ describe('CarOnSaleClient unit', () => {
             });
 
             it("logs and throws when the API doesn't return 200", () => {
-                let {loggerMock, configMock, httpClientMock} =
+                const {loggerMock, configMock, httpClientMock} =
                     // use different mocked values, so the test code is searchable easier
                     configureGetRunningAuctionsMocks(
                         'authToken234234h',
@@ -262,7 +265,7 @@ describe('CarOnSaleClient unit', () => {
                         false,
                         'api-error-message-4124nfsif'
                     );
-                let client = new CarOnSaleClient.CarOnSaleClient(
+                const client = new CarOnSaleClient.CarOnSaleClient(
                     loggerMock, configMock, httpClientMock
                 );
 
@@ -288,7 +291,7 @@ describe('CarOnSaleClient unit', () => {
             });
 
             it(`logs and throws when the API returns incorrect payload`, () => {
-                let {loggerMock, configMock, httpClientMock} =
+                const {loggerMock, configMock, httpClientMock} =
                     configureGetRunningAuctionsMocks(
                         'authTokenmn234',
                         'userId4mftttq',
@@ -300,7 +303,7 @@ describe('CarOnSaleClient unit', () => {
                         '',
                         true, // relevant param!
                     );
-                let client = new CarOnSaleClient.CarOnSaleClient(
+                const client = new CarOnSaleClient.CarOnSaleClient(
                     loggerMock, configMock, httpClientMock
                 );
 

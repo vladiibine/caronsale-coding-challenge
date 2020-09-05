@@ -1,8 +1,11 @@
 import * as crypto from 'crypto';
 import {inject, injectable} from "inversify";
 import {AxiosStatic} from 'axios';
+
+/* tslint:disable */
 // import * as jsonschema from "jsonschema"; // can't stub things in imported modules
-let jsonschema = require('jsonschema');  // can only stub things out in required modules
+const jsonschema = require('jsonschema');  // can only stub things out in required modules
+/* tslint:enable */
 
 import {ERRORS, IApiResult, ICarOnSaleClient} from "../interface/ICarOnSaleClient";
 import {DependencyIdentifier} from "../../../DependencyIdentifiers";
@@ -15,17 +18,50 @@ export class CarOnSaleClient implements ICarOnSaleClient {
     private authToken: string = null;
     private userId: string = null;
 
+    public static hashPassword(password: string): string {
+        let hash = `${password}`;
+
+        for (let i = 0; i < 5; i++) {
+            hash = crypto.createHash('sha512').update(hash).digest('hex');
+        }
+
+        return hash;
+    }
+
+    public static async authenticate(config: IConfig, httpClient: AxiosStatic): Promise<{authToken: string, userId: string}> {
+        const apiBaseUrl = config.getOption(ConfigOption.API_BASE_URL);
+        const apiAuthenticationPath = config.getOption(ConfigOption.API_AUTHENTICATION_ENDPOINT);
+        const userEmailId = config.getOption(ConfigOption.USER_EMAIL_ID);
+
+        const authEndpoint = `${apiBaseUrl}/${apiAuthenticationPath}/${userEmailId}`;
+        const authResult = await httpClient.put(
+            `${authEndpoint}`,
+            {
+                password: CarOnSaleClient.hashPassword(
+                    config.getOption(ConfigOption.PASSWORD)
+                ),
+            },
+            {
+                headers: {
+                    'content-type': 'application/json'
+                }
+            }
+        );
+
+        return {authToken: authResult.data.token, userId: authResult.data.userId}
+    }
+
     public constructor(
         @inject(DependencyIdentifier.LOGGER) private logger: ILogger,
         @inject(DependencyIdentifier.CONFIG) private config: IConfig,
-        @inject(DependencyIdentifier.HTTP_CLIENT) private http_client: AxiosStatic,
+        @inject(DependencyIdentifier.HTTP_CLIENT) private httpClient: AxiosStatic,
     ) {
     }
 
-    async getRunningAuctions(): Promise<IApiResult> {
+    public async getRunningAuctions(): Promise<IApiResult> {
         if (this.authToken === null) {
             try {
-                let {authToken, userId} = await CarOnSaleClient.authenticate(this.config, this.http_client);
+                const {authToken, userId} = await CarOnSaleClient.authenticate(this.config, this.httpClient);
                 this.authToken = authToken;
                 this.userId = userId;
 
@@ -43,10 +79,10 @@ export class CarOnSaleClient implements ICarOnSaleClient {
         // The result contains a "userId" and a "token" field that have to be set as "userid" / "authtoken"
         // HTTP header in further requests.
         return new Promise((resolve, reject) => {
-            let baseUrl = this.config.getOption(ConfigOption.API_BASE_URL);
-            let buyerAuctions = this.config.getOption(ConfigOption.API_BUYER_AUCTIONS);
+            const baseUrl = this.config.getOption(ConfigOption.API_BASE_URL);
+            const buyerAuctions = this.config.getOption(ConfigOption.API_BUYER_AUCTIONS);
 
-            this.http_client.get(`${baseUrl}/${buyerAuctions}`,
+            this.httpClient.get(`${baseUrl}/${buyerAuctions}`,
                 {
                     headers: {
                         'userid': this.userId,
@@ -58,7 +94,7 @@ export class CarOnSaleClient implements ICarOnSaleClient {
                 // VladA: left this line to help with debugging
                 // console.log(JSON.stringify(response.data))
                 // debugger
-                let validationResult = jsonschema.validate(response.data, API_DATA_SCHEMA);
+                const validationResult = jsonschema.validate(response.data, API_DATA_SCHEMA);
 
                 if (validationResult.errors.length === 0){
                     resolve({error: null, data: response.data})
@@ -74,38 +110,5 @@ export class CarOnSaleClient implements ICarOnSaleClient {
                     reject(reason);
                 })
         });
-    }
-
-    static hashPassword(password: string): string {
-        let hash = `${password}`;
-
-        for (let i = 0; i < 5; i++) {
-            hash = crypto.createHash('sha512').update(hash).digest('hex');
-        }
-
-        return hash;
-    }
-
-    static async authenticate(config: IConfig, http_client: AxiosStatic): Promise<{authToken: string, userId: string}> {
-        let apiBaseUrl = config.getOption(ConfigOption.API_BASE_URL);
-        let apiAuthenticationPath = config.getOption(ConfigOption.API_AUTHENTICATION_ENDPOINT);
-        let userEmailId = config.getOption(ConfigOption.USER_EMAIL_ID);
-
-        let authEndpoint = `${apiBaseUrl}/${apiAuthenticationPath}/${userEmailId}`;
-        let authResult = await http_client.put(
-            `${authEndpoint}`,
-            {
-                password: CarOnSaleClient.hashPassword(
-                    config.getOption(ConfigOption.PASSWORD)
-                ),
-            },
-            {
-                headers: {
-                    'content-type': 'application/json'
-                }
-            }
-        );
-
-        return {authToken: authResult.data.token, userId: authResult.data.userId}
     }
 }

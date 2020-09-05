@@ -19,10 +19,10 @@ export class AuctionMonitorApp {
 
         this.logger.log(`Auction Monitor started.`);
 
-        let auctions = await this.carOnSaleClient.getRunningAuctions();
+        const auctions = await this.carOnSaleClient.getRunningAuctions();
 
         if (auctions.error) {
-            process.exit(-1);  //and of course, by -1, we mean 255
+            process.exit(-1);  // and of course, by -1, we mean 255
 
         } else {
             // VladA - for simplicity's sake, I assume that auction.data.total refers to the number of items
