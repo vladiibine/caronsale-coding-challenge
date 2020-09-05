@@ -10,6 +10,8 @@ import {Logger} from "./services/Logger/classes/Logger";
 import {IConfig} from "./services/Config/interface/IConfig";
 import {Config} from "./services/Config/classes/Config";
 import construct = Reflect.construct;
+import {IStatsCalculator} from "./services/StatsCalculator/interface/IStatsCalculator";
+import {StatsCalculator} from "./services/StatsCalculator/classes/StatsCalculator";
 
 /*
  * Create the DI container.
@@ -28,6 +30,7 @@ interface AxiosInterface {
 container.bind<ILogger>(DependencyIdentifier.LOGGER).to(Logger);
 container.bind<ICarOnSaleClient>(DependencyIdentifier.CAR_ON_SALE_CLIENT).to(CarOnSaleClient);
 container.bind<IConfig>(DependencyIdentifier.CONFIG).to(Config);
+container.bind<IStatsCalculator>(DependencyIdentifier.STATS_CALCULATOR).to(StatsCalculator);
 
 // this took me some time to figure out! Now I have Stockholm Syndrome and
 // like dependency injection! XD
