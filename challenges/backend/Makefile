@@ -23,10 +23,6 @@ test: _build
 	docker run --rm -it caronsale-dev npm test
 
 ########### Section 3: Debugging
-# for running the tests in an interactive shell, in debug mode
-debug-tests: _build
-	docker run --rm -it caronsale-dev npm debug-tests
-
 # `make ssh` puts the user into an interactive shell, in the docker image
 # useful for debugging
 ssh:
