@@ -8,11 +8,12 @@ import * as sinon from 'sinon';
 
 import {CarOnSaleClient} from "./CarOnSaleClient";
 import {ConfigOption} from "../../Config/interface/IConfig";
+import {ERRORS} from "../interface/ICarOnSaleClient";
 
 const expect = require('chai').expect;
 
 describe('CarOnSaleClient unit', () => {
-    context("hashPassword", () => {
+    context(".hashPassword()", () => {
         it('hash empty string', () => {
             expect(CarOnSaleClient.hashPassword('')).to.equal('1a33bb15daa9e600dce1cb506148a295a42606192980d17aa197d7d696eb22403b0c75ac94abee3951d3ac799771e3553298a0498100902adcb6d778c73b2b23');
         });
@@ -26,71 +27,110 @@ describe('CarOnSaleClient unit', () => {
         });
     });
 
-    context("authenticate", () => {
-        it("calls dependencies properly", () => {
+    context(".authenticate()", () => {
+        /**
+         * Official mocking for the authenticate function.
+         * Would move this to a fixture file.
+         * @param token - If authentication succeeds, will return this token
+         * @param userId - if authentication succeeds, will return this userId
+         * @param getOptionValues - values to call config.getOption with (4 values!)
+         * @param success - whether the mocked authentication should succeed
+         */
+        function configureAuthenticateMocks(
+            token: string, userId: string, getOptionValues: Array<string>,
+            success: boolean) {
             let config_mock = sinon.fake();
 
             // config_mock.getOption = sinon.fake.returns(33);
             config_mock.getOption = sinon.stub();
-            config_mock.getOption.onCall(0).returns(11);
-            config_mock.getOption.onCall(1).returns(22);
-            config_mock.getOption.onCall(2).returns(33);
-            config_mock.getOption.onCall(3).returns(44);
+            config_mock.getOption.onCall(0).returns(getOptionValues[0]);
+            config_mock.getOption.onCall(1).returns(getOptionValues[1]);
+            config_mock.getOption.onCall(2).returns(getOptionValues[2]);
+            config_mock.getOption.onCall(3).returns(getOptionValues[3]);
 
 
             let http_client_mock = sinon.fake();
-            http_client_mock.put = sinon.fake.resolves(
-                {data: {token: 'noop', userId: 'noop2'}}
-            );
+            if (success) {
+                http_client_mock.put = sinon.fake.resolves(
+                    {data: {token: token, userId: userId}}
+                );
+            } else {
+                http_client_mock.put = sinon.fake.rejects('noop');
+            }
+            return {config_mock, http_client_mock};
+        }
 
-            return CarOnSaleClient.authenticate(
-                config_mock, http_client_mock
-            ).then(result => {
-                expect(config_mock.getOption.callCount).to.equal(4);
-                expect(config_mock.getOption.calledWith(ConfigOption.API_BASE_URL)).to.be.true;
-                expect(config_mock.getOption.calledWith(ConfigOption.API_AUTHENTICATION_ENDPOINT)).to.be.true;
-                expect(config_mock.getOption.calledWith(ConfigOption.USER_EMAIL_ID)).to.be.true;
-                expect(config_mock.getOption.calledWith(ConfigOption.PASSWORD)).to.be.true;
+        context("happy flow", () => {
+            it("calls dependencies properly", () => {
+                let {config_mock, http_client_mock} = configureAuthenticateMocks(
+                    'tokenAe2342n48',
+                    'userId@419014nsd',
+                    ['11', '22', '33'],
+                    true
+                );
 
-                expect(http_client_mock.put.callCount).to.equal(1);
-                expect(http_client_mock.put.calledWith(`11/22/33`));
+                return CarOnSaleClient.authenticate(
+                    config_mock, http_client_mock
+                ).then(result => {
+                    expect(config_mock.getOption.callCount).to.equal(4);
+                    expect(config_mock.getOption.calledWith(ConfigOption.API_BASE_URL)).to.be.true;
+                    expect(config_mock.getOption.calledWith(ConfigOption.API_AUTHENTICATION_ENDPOINT)).to.be.true;
+                    expect(config_mock.getOption.calledWith(ConfigOption.USER_EMAIL_ID)).to.be.true;
+                    expect(config_mock.getOption.calledWith(ConfigOption.PASSWORD)).to.be.true;
+
+                    expect(http_client_mock.put.callCount).to.equal(1);
+                    expect(http_client_mock.put.calledWith(`11/22/33`));
 
 
-            }).catch(error => {
-                throw new Error(error)
-            })
+                }).catch(error => {
+                    throw new Error(error)
+                })
+            });
+
+            it("Given dependency stubs, returns proper value", () => {
+                let {config_mock, http_client_mock} = configureAuthenticateMocks(
+                    'token-4324ngfd',
+                    'userId-24324',
+                    ['', '', '', ''],
+                    true
+                );
+
+                return CarOnSaleClient.authenticate(
+                    config_mock, http_client_mock
+                ).then(result => {
+                    expect(result.authToken).to.equal('token-4324ngfd');
+                    expect(result.userId).to.equal('userId-24324')
+
+                }).catch(error => {
+                    throw new Error(error)
+                })
+            });
         });
 
-        it("Uses dependency values properly", () => {
-            // sinon.replace()
-            let config_mock = sinon.fake();
-            config_mock.getOption = sinon.fake();
+        context("can't authenticate", () => {
+            it('throws', () => {
+                let {config_mock, http_client_mock} = configureAuthenticateMocks(
+                    'tokenAe2342n48',
+                    'userId@419014nsd',
+                    ['11', '22', '33'],
+                    false,
+                );
 
-            let http_client_mock = sinon.fake();
-            http_client_mock.put = sinon.fake.returns(Promise.resolve(
-                {
-                    data: {
-                        token: 'token1v93m',
-                        userId: 'userId1313'
-                    }
-                }
-            ));
+                return CarOnSaleClient.authenticate(
+                    config_mock, http_client_mock
+                ).then((value => {
+                    expect.fail('Was not supposed to resolve!')
 
-            return CarOnSaleClient.authenticate(
-                config_mock, http_client_mock
-            ).then(result => {
-                expect(result.authToken).to.equal('token1v93m');
-                expect(result.userId).to.equal('userId1313')
-
-            }).catch(error => {
-                throw new Error(error)
+                })).catch(reason => {
+                    // Nothing! the test passes
+                })
             })
-        });
+        })
+
     });
 
 
-    context("getRunningAuctions", () => {
-
+    context(".getRunningAuctions()", () => {
         /**
          "Official" mocking for the function. Would move this to a fixture file.
          * @param authToken
@@ -98,11 +138,20 @@ describe('CarOnSaleClient unit', () => {
          * @param getOptionBaseUrl
          * @param getOptionBuyerAuctions
          * @param apiData
+         * @param auth_success - whether the authentication API call was successful
+         * @param api_success - whether the Auctions endpoint returned success
+         * @param api_error_reason - when the Auctions endpoint fails, return this as the reason
          */
         function configureGetRunningAuctionsMocks(
-            authToken: string, userId: string, getOptionBaseUrl: string, getOptionBuyerAuctions: string, apiData: string) {
+            authToken: string, userId: string, getOptionBaseUrl: string, getOptionBuyerAuctions: string, apiData: string,
+            auth_success: boolean = true, api_success: boolean = true, api_error_reason: string = '') {
+
             let authenticate_stub = sinon.stub(CarOnSaleClient, 'authenticate');
-            authenticate_stub.resolves({authToken: authToken, userId: userId});
+            if (auth_success) {
+                authenticate_stub.resolves({authToken: authToken, userId: userId});
+            } else {
+                authenticate_stub.rejects('noop');
+            }
 
             let logger_mock = sinon.fake();
             logger_mock.log = sinon.fake();
@@ -111,59 +160,118 @@ describe('CarOnSaleClient unit', () => {
             config_mock.getOption.onCall(0).returns(getOptionBaseUrl);
             config_mock.getOption.onCall(1).returns(getOptionBuyerAuctions);
             let http_client_mock = sinon.fake();
-            http_client_mock.get = sinon.stub().resolves({data: apiData});
+            if (api_success) {
+                http_client_mock.get = sinon.stub().resolves({data: apiData});
+            } else {
+                http_client_mock.get = sinon.stub().rejects(api_error_reason);
+            }
             return {authenticate_stub, logger_mock, config_mock, http_client_mock};
         }
 
-        // TODO - try to mock the self object...or make use of dep.injection
-        it("Calls dependencies properly, happy flow", () => {
-            let {authenticate_stub, logger_mock, config_mock, http_client_mock} =
-                // use different mocked values, so the test code is searchable easier
-                configureGetRunningAuctionsMocks('3mr41', 'mrot4', '1rfe4', '4gmbNe', 'noop-nr324');
-            let client = new CarOnSaleClient(
-                logger_mock, config_mock, http_client_mock
-            );
+        context("happy flow", () => {
+            it("Calls dependencies properly", () => {
+                let {authenticate_stub, logger_mock, config_mock, http_client_mock} =
+                    // use different mocked values, so the test code is searchable easier
+                    configureGetRunningAuctionsMocks('3mr41', 'mrot4', '1rfe4', '4gmbNe', 'noop-nr324');
+                let client = new CarOnSaleClient(
+                    logger_mock, config_mock, http_client_mock
+                );
 
-            return client.getRunningAuctions().then(value => {
-                expect(authenticate_stub.callCount).to.equal(1);
-                expect(authenticate_stub.calledWith(config_mock, http_client_mock))
-                expect(config_mock.getOption.callCount).to.equal(2);
-                expect(config_mock.calledWith(ConfigOption.API_BASE_URL));
-                expect(config_mock.calledWith(ConfigOption.API_BUYER_AUCTIONS));
+                return client.getRunningAuctions().then(value => {
+                    expect(authenticate_stub.callCount).to.equal(1);
+                    expect(authenticate_stub.calledWith(config_mock, http_client_mock))
+                    expect(config_mock.getOption.callCount).to.equal(2);
+                    expect(config_mock.calledWith(ConfigOption.API_BASE_URL));
+                    expect(config_mock.calledWith(ConfigOption.API_BUYER_AUCTIONS));
 
-                expect(http_client_mock.get.calledWith(`1rfe4/4gmb`));
-            })
-        });
-
-        it("Returns a Promise<IApiResult>, happy flow", () => {
-            let {logger_mock, config_mock, http_client_mock} =
-                configureGetRunningAuctionsMocks('noop-4rv', 'noop-c93nf', 'asdf3mn4', 'zxcv00mn', 'noop-cmr2');
-
-            let client = new CarOnSaleClient(
-                logger_mock, config_mock, http_client_mock
-            );
-
-            return client.getRunningAuctions().then(value => {
-                let {error, data} = value;
-                expect(error).to.be.null;
-                expect(data).to.equal('noop-cmr2');
+                    expect(http_client_mock.get.calledWith(`1rfe4/4gmb`));
+                })
             });
 
+            it("Returns a Promise<IApiResult>", () => {
+                let {logger_mock, config_mock, http_client_mock} =
+                    configureGetRunningAuctionsMocks('noop-4rv', 'noop-c93nf', 'asdf3mn4', 'zxcv00mn', 'noop-cmr2');
 
+                let client = new CarOnSaleClient(
+                    logger_mock, config_mock, http_client_mock
+                );
+
+                return client.getRunningAuctions().then(value => {
+                    let {error, data} = value;
+                    expect(error).to.be.null;
+                    expect(data).to.equal('noop-cmr2');
+                });
+
+
+            });
         });
+
+        context('API fails, returns errors', () => {
+            it("returns authentication failure error", () => {
+                let {authenticate_stub, logger_mock, config_mock, http_client_mock} =
+                    // use different mocked values, so the test code is searchable easier
+                    configureGetRunningAuctionsMocks(
+                        'authToken234234h',
+                        'userId34234',
+                        '1rfe4',
+                        '4gmbNe',
+                        'noop-nr324',
+                        false,
+                    );
+                let client = new CarOnSaleClient(
+                    logger_mock, config_mock, http_client_mock
+                );
+
+                client.getRunningAuctions().then(value => {
+                    expect(value).to.deep.equal({error: ERRORS.COULD_NOT_AUTHENTICATE, data: null})
+
+                }).catch(reason => {
+                    expect.fail('Should not raise!')
+                })
+            });
+
+            it("logs and throws when the API doesn't return successfully", () => {
+                let {authenticate_stub, logger_mock, config_mock, http_client_mock} =
+                    // use different mocked values, so the test code is searchable easier
+                    configureGetRunningAuctionsMocks(
+                        'authToken234234h',
+                        'userId34234',
+                        '1rfe4',
+                        '4gmbNe',
+                        'noop-nr324',
+                        true,
+                        false,
+                        'api-error-message-4124nfsif'
+                    );
+                let client = new CarOnSaleClient(
+                    logger_mock, config_mock, http_client_mock
+                );
+
+                return client.getRunningAuctions()
+                    .then((value => {
+                        expect.fail('Should not resolve!')
+                    }))
+                    .catch(reason => {
+                        expect(logger_mock.log.getCalls())
+                            .to.be.an('array')
+                            .to.have.lengthOf(2);
+
+                        expect(logger_mock.log.getCalls()[0].args)
+                            .to.be.an('array')
+                            .to.have.lengthOf('1')
+                            .to.include.members(['Successfully authenticated!'])
+
+                        expect(logger_mock.log.getCalls()[1].args)
+                            .to.be.an('array')
+                            .to.have.lengthOf(1)
+                            .to.include.members(["Couldn't get the auction information: api-error-message-4124nfsif"])
+                    });
+            });
+        });
+
     });
 
     afterEach(() => {
         sinon.restore()
     });
-})
-
-describe('Hello function', () => {
-
-    it('test that the testing framework works', () => {
-        // const result = hello();
-        // @ts-ignore
-        expect(1).to.equal(1);
-    });
-
 });
