@@ -5,7 +5,7 @@
 #####################################################
 # Sections
 # 1. Running
-# 2. Testing
+# 2. Testing/Linting
 # 3. Debugging
 # 4. Internal
 #####################################################
@@ -18,9 +18,17 @@ run: _build
 # ALIAS OF `make run`
 start: run
 
-########### Section 2: Testing
+########### Section 2: Testing/Linting
+# Run all tests
 test: _build
 	docker run --rm -it caronsale-dev npm test
+
+# Run linting
+tslint: _build
+	docker run --rm -it caronsale-dev ./node_modules/.bin/tslint -c tslint.json --project .
+# 	/app/node_modules/.bin/tslint --project .
+# 	/app/node_modules/.bin/tslint
+# 	/app/node_modules/.bin/tslint -c tslint.json src/**/*.ts
 
 ########### Section 3: Debugging
 # `make ssh` puts the user into an interactive shell, in the docker image
