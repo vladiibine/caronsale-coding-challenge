@@ -221,7 +221,7 @@ describe('CarOnSaleClient unit', () => {
                 // run once getRunningActions for the authentication to happen
                 // then run it again, relevant for this test
                 return client.getRunningAuctions()
-                    .then((value => {
+                    .then((firstValue => {
                         client.getRunningAuctions()
                             .then((value => {
                                 expect(authenticateStub.callCount).to.equal(1);

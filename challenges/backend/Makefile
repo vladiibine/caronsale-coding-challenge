@@ -29,7 +29,7 @@ test: _build
 
 # Run linting
 tslint: _build
-	docker run --rm -it caronsale-dev ./node_modules/.bin/tslint -c tslint.json --project .
+	@docker run --rm -it caronsale-dev /bin/bash -c 'npm run tslint && echo "tslint ran successfully. No issues! :)"'
 
 ########### Section 3: Debugging
 # `make ssh` puts the user into an interactive shell, in the docker image

@@ -35,6 +35,18 @@ If you have any questions, feel free to contact Fabian Roth via fabian.roth@caro
  
 # Solution
 
+
+## Running the application
+Using docker, recommended:
+```bash 
+$ make start
+```
+
+Not using docker
+```bash
+$ npm start
+```
+
 ## Running the tests from a docker container
 Prerequisites: make sure you have `docker` installed!
 
@@ -42,7 +54,7 @@ Prerequisites: make sure you have `docker` installed!
 $ make test
 ```
 
-## Building the docker image 
-```bash 
-$ make build
+## Running the linter
+```bash
+$ make tslint
 ```
