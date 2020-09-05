@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "./node_modules/.bin/ts-node src/app/main.ts",
-    "test": "./node_modules/.bin/mocha --compilers ts:ts-node/register ./src/**/*.spec.ts",
-    "debug-tests": "./node_modules/.bin/mocha debug --compilers ts:ts-node/register ./src/**/*.spec.ts"
+    "test": "./node_modules/.bin/mocha --compilers ts:ts-node/register ./src/**/*.spec.ts"
   },
   "author": "",
   "license": "ISC",
