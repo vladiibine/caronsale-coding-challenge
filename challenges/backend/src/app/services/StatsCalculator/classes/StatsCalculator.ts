@@ -21,6 +21,6 @@ export class StatsCalculator implements IStatsCalculator {
             auctionProgress += auction.currentHighestBidValue / auction.minimumRequiredAsk * 100;
         }
 
-        return auctionProgress / items.length;
+        return items.length ? auctionProgress / items.length : 0;
     }
 }
