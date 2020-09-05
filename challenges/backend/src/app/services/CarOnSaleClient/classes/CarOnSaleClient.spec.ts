@@ -191,7 +191,7 @@ describe('CarOnSaleClient unit', () => {
         }
 
         context("happy flow", () => {
-            it("Calls dependencies properly", () => {
+            it("Calls dependencies properly, not authenticated", () => {
                 const {authenticateStub, loggerMock, configMock, httpClientMock} =
                     // use different mocked values, so the test code is searchable easier
                     configureGetRunningAuctionsMocks('3mr41', 'mrot4', '1rfe4', '4gmbNe', 'noop-nr324');
@@ -209,6 +209,32 @@ describe('CarOnSaleClient unit', () => {
                     expect(httpClientMock.get.calledWith(`1rfe4/4gmb`));
                 })
             });
+
+            it("Calls dependencies properly, already authenticated", () => {
+                const {authenticateStub, loggerMock, configMock, httpClientMock} =
+                    // use different mocked values, so the test code is searchable easier
+                    configureGetRunningAuctionsMocks('44%%455', 'mb$$ro4t4', 'rrfrff3', 'c534g6Ne', 'noop-234c432');
+                const client = new CarOnSaleClient.CarOnSaleClient(
+                    loggerMock, configMock, httpClientMock
+                );
+
+                // run once getRunningActions for the authentication to happen
+                // then run it again, relevant for this test
+                return client.getRunningAuctions()
+                    .then((value => {
+                        client.getRunningAuctions()
+                            .then((value => {
+                                expect(authenticateStub.callCount).to.equal(1);
+                                expect(authenticateStub.calledWith(configMock, httpClientMock))
+                                expect(configMock.getOption.callCount).to.equal(4);
+                                expect(configMock.calledWith(ConfigOption.API_BASE_URL));
+                                expect(configMock.calledWith(ConfigOption.API_BUYER_AUCTIONS));
+
+                                expect(httpClientMock.get.calledWith(`rrfrff3/c534g6Ne`));
+
+                            }))
+                    }))
+            })
 
             it("Returns a Promise<IApiResult>", () => {
                 const {loggerMock, configMock, httpClientMock} =

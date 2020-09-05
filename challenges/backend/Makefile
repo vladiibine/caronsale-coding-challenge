@@ -19,16 +19,17 @@ run: _build
 start: run
 
 ########### Section 2: Testing/Linting
-# Run all tests
+# Run all tests, and dumps coverage to coverage/
 test: _build
-	docker run --rm -it caronsale-dev npm test
+	docker rm caronsale-dev-container || true
+	docker run --name caronsale-dev-container -it caronsale-dev npm test
+	rm -r coverage/ || true
+	docker cp caronsale-dev-container:/app/coverage ./coverage
+	@echo Check out the coverage with: "chromium-browser coverage/index.html"
 
 # Run linting
 tslint: _build
 	docker run --rm -it caronsale-dev ./node_modules/.bin/tslint -c tslint.json --project .
-# 	/app/node_modules/.bin/tslint --project .
-# 	/app/node_modules/.bin/tslint
-# 	/app/node_modules/.bin/tslint -c tslint.json src/**/*.ts
 
 ########### Section 3: Debugging
 # `make ssh` puts the user into an interactive shell, in the docker image
